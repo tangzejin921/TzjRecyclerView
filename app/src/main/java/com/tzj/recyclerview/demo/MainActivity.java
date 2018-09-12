@@ -2,7 +2,6 @@ package com.tzj.recyclerview.demo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,13 +35,12 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
         }
         list.add(new Demo2Entity("shfdf"));
 
-        adapter = new AdapterDelegate();
+        ;
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setGridLayoutManager(5,true);
         mRecyclerView.setDivider(50,0xFFFF0000);
         mRecyclerView.setDivider(true,true);
-        adapter = (AdapterDelegate) mRecyclerView.getAdapter();
-//        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter = new AdapterDelegate());
         mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {

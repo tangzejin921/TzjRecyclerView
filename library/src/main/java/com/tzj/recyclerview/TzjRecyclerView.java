@@ -11,7 +11,6 @@ import com.tzj.recyclerview.LayoutManager.GridLayoutManager;
 import com.tzj.recyclerview.LayoutManager.ILayoutManager;
 import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
 import com.tzj.recyclerview.LayoutManager.StaggeredGridLayoutManager;
-import com.tzj.recyclerview.adapter.AdapterDelegate;
 
 public class TzjRecyclerView extends RecyclerView{
 
@@ -28,7 +27,6 @@ public class TzjRecyclerView extends RecyclerView{
         init();
     }
     private void init() {
-        setAdapter(new AdapterDelegate());
     }
 
     //===================================================

@@ -11,7 +11,7 @@
         android:id="@+id/net_err_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/empty" />
+        android:src="@drawable/net_error" />
 
     <TextView
         android:id="@+id/net_err_tv"
@@ -29,6 +29,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:visibility="gone"
         android:text="设置" />
 </LinearLayout>

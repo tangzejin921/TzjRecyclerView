@@ -11,6 +11,10 @@ import com.tzj.recyclerview.LayoutManager.GridLayoutManager;
 import com.tzj.recyclerview.LayoutManager.ILayoutManager;
 import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
 import com.tzj.recyclerview.LayoutManager.StaggeredGridLayoutManager;
+import com.tzj.recyclerview.adapter.AdapterDelegate;
+import com.tzj.recyclerview.adapter.TzjAdapter;
+
+import java.util.List;
 
 public class TzjRecyclerView extends RecyclerView{
 
@@ -76,6 +80,9 @@ public class TzjRecyclerView extends RecyclerView{
         } else {
             throw new RuntimeException("请用 ILayoutManager");
         }
+        if (getAdapter()==null){
+            setAdapter(new AdapterDelegate());
+        }
     }
 
     public void setDivider(boolean leftRight,boolean topBottom){
@@ -126,5 +133,41 @@ public class TzjRecyclerView extends RecyclerView{
         }
         setClipToPadding(false);
         setPadding(l,t,r,b);
+    }
+
+
+    //=========================adapter 的方法============================
+    public void notifyDataSetChanged() {
+        getAdapter().notifyDataSetChanged();
+    }
+    public void setItemClickListener(TzjAdapter.OnItemClickListener itemClickListener) {
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            ((AdapterDelegate) adapter).getAdapter().setItemClickListener(itemClickListener);
+        }
+    }
+    public void setClickListener(TzjAdapter.OnClickIndexListener clickListener) {
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            ((AdapterDelegate) adapter).getAdapter().setClickListener(clickListener);
+        }
+    }
+    public void setList(List<? extends IViewType> list) {
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            ((AdapterDelegate) adapter).getAdapter().setList(list);
+        }
+    }
+    public void addList(List<? extends IViewType> list) {
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            ((AdapterDelegate) adapter).getAdapter().addList(list);
+        }
+    }
+    public void addItem(IViewType item){
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            ((AdapterDelegate) adapter).getAdapter().addItem(item);
+        }
     }
 }

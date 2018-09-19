@@ -92,8 +92,8 @@ public class TzjRecyclerView extends RecyclerView{
     /**
      *
      */
-    public void setDivider(float dp) {
-        setDivider(dp,android.R.color.transparent);
+    public void setDivider(float px) {
+        setDivider(px,android.R.color.transparent);
     }
     public void setDivider(final float px,int color) {
         removeItemDecoration(dividerItemDecoration);

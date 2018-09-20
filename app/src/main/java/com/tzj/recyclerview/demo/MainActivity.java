@@ -64,5 +64,7 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
     @Override
     public void onItemClick(TzjAdapter adapter, View v, int index, Object obj) {
         Toast.makeText(this,obj.toString(),Toast.LENGTH_LONG).show();
+        list.remove(index);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -38,6 +38,16 @@ public class AdapterDelegate extends RecyclerView.Adapter {
      */
     private NetBroadcastReceiver receiver = new NetBroadcastReceiver();
 
+    public AdapterDelegate() {
+        //todo 这里会导致内存泄漏吗？
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                notifyDataSetChanged();
+            }
+        });
+    }
+
     public TzjAdapter getAdapter() {
         return adapter;
     }
@@ -130,7 +140,6 @@ public class AdapterDelegate extends RecyclerView.Adapter {
                 currentAdapter.onAttachedToRecyclerView(mRecyclerView);//为了 GridLayout 的 span 设置
             }
         }
-        currentAdapter.notifyDataSetChanged();
     }
 
     public EmptyAdapter getEmptyAdapter() {

@@ -23,9 +23,13 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
      */
     private RecyclerView.LayoutManager layoutManager;
     /**
+     * 如果不为空，用这里的内容
+     */
+    private IViewType viewType;
+    /**
      * 数据
      */
-    private List<IViewType> mData = new ArrayList();
+    private List<Object> mData = new ArrayList();
     /**
      * 记录上次点击的地方
      */
@@ -68,16 +72,22 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
-    public List<? extends IViewType> getList() {
+    public IViewType getViewType() {
+        return viewType;
+    }
+    public void setViewType(IViewType viewType) {
+        this.viewType = viewType;
+    }
+    public List<?> getList() {
         return mData;
     }
-    public void setList(List<? extends IViewType> list) {
-        this.mData  = (List<IViewType>) list;
+    public void setList(List<?> list) {
+        this.mData  = (List<Object>) list;
     }
-    public void addList(List<? extends IViewType> list) {
+    public void addList(List list) {
         this.mData.addAll(list);
     }
-    public void addItem(IViewType item){
+    public void addItem(Object item){
         this.mData.add(item);
     }
     public void setSelectId(int index){
@@ -92,7 +102,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     public void setClickListener(OnClickIndexListener clickListener) {
         this.clickListener = clickListener;
     }
-    public <T extends IViewType> T  getItem(int position) {
+    public <T> T  getItem(int position) {
         return (T) mData.get(position);
     }
     @Override
@@ -107,15 +117,42 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     private int lastItemViewTypePosition;
     @Override
     public int getItemViewType(int position) {
-        return getItem(lastItemViewTypePosition = position).type();
+        lastItemViewTypePosition = position;
+        return getViewId(position);
     }
+
+    public int getViewId(int index){
+        if (viewType!=null){
+            return viewType.type();
+        }else{
+            Object item = getItem(lastItemViewTypePosition);
+            if (item instanceof IViewType){
+                return ((IViewType) item).type();
+            }else{
+                throw new RuntimeException("请设置 viewType 或者 集合类实现IViewType");
+            }
+        }
+    }
+    public Class<? extends TzjViewHolder> getHolder(int index){
+        if (viewType!=null){
+            return viewType.holder();
+        }else{
+            Object item = getItem(lastItemViewTypePosition);
+            if (item instanceof IViewType){
+                return ((IViewType) item).holder();
+            }else{
+                throw new RuntimeException("请设置 viewType 或者 集合类实现IViewType");
+            }
+        }
+    }
+
     @NonNull
     @Override
     public TzjViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         TzjViewHolder holder = null;
         View inflate = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+        Class<? extends TzjViewHolder> holer = getHolder(lastItemViewTypePosition);
         try {
-            Class<? extends TzjViewHolder> holer = getItem(lastItemViewTypePosition).holder();
             Constructor<? extends TzjViewHolder> constructor = holer.getConstructor(View.class);
             holder = constructor.newInstance(inflate);
             holder.setListener(listenerRelay);

@@ -13,6 +13,9 @@ import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
 import com.tzj.recyclerview.LayoutManager.StaggeredGridLayoutManager;
 import com.tzj.recyclerview.adapter.AdapterDelegate;
 import com.tzj.recyclerview.adapter.TzjAdapter;
+import com.tzj.recyclerview.entity.DefaultViewType;
+import com.tzj.recyclerview.entity.Empty;
+import com.tzj.recyclerview.holder.TzjViewHolder;
 
 import java.util.List;
 
@@ -152,22 +155,41 @@ public class TzjRecyclerView extends RecyclerView{
             ((AdapterDelegate) adapter).getAdapter().setClickListener(clickListener);
         }
     }
-    public void setList(List<? extends IViewType> list) {
+    public void setList(List list) {
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate){
             ((AdapterDelegate) adapter).getAdapter().setList(list);
         }
     }
-    public void addList(List<? extends IViewType> list) {
+    public void addList(List list) {
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate){
             ((AdapterDelegate) adapter).getAdapter().addList(list);
         }
     }
-    public void addItem(IViewType item){
+    public void addItem(Object item){
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate){
             ((AdapterDelegate) adapter).getAdapter().addItem(item);
+        }
+    }
+    public Empty getEmpty(){
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            return ((AdapterDelegate) adapter).getEmptyAdapter().getEmpty();
+        }else {
+            throw new RuntimeException();
+        }
+    }
+    public void setViewType(int r,Class<? extends TzjViewHolder> clzz){
+        DefaultViewType viewType = new DefaultViewType(null);
+        viewType.setType(r);
+        viewType.setClzz(clzz);
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            ((AdapterDelegate) adapter).getAdapter().setViewType(viewType);
+        }else{
+            throw new RuntimeException();
         }
     }
 }

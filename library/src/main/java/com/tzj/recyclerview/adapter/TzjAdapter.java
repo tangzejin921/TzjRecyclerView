@@ -166,7 +166,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TzjViewHolder holder, int position) {
         holder.itemView.setTag(R.id.item_index_tag,position);
-        holder.onBind(getItem(position),position);
+        holder.onBind(this,getItem(position),position);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.tzj.recyclerview.demo;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tzj.recyclerview.adapter.TzjAdapter;
 import com.tzj.recyclerview.holder.TzjViewHolder;
 
 public class DemoHolder extends TzjViewHolder<DemoEntity>{
@@ -14,7 +15,7 @@ public class DemoHolder extends TzjViewHolder<DemoEntity>{
     }
 
     @Override
-    public void onBind(DemoEntity o, int position) {
+    public void onBind(TzjAdapter adapter,DemoEntity o, int position) {
         textView.setText(o.s);
         setOnClickListener(textView,position);
     }

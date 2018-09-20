@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.tzj.recyclerview.R;
+import com.tzj.recyclerview.adapter.TzjAdapter;
 
 public class TzjViewHolder<D> extends RecyclerView.ViewHolder {
     private View.OnClickListener listener;
@@ -14,7 +15,7 @@ public class TzjViewHolder<D> extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public void onBind(D d,int position){
+    public void onBind(TzjAdapter adapter,D d, int position){
 
     }
 

@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tzj.recyclerview.R;
+import com.tzj.recyclerview.adapter.TzjAdapter;
 import com.tzj.recyclerview.entity.Empty;
 
 /**
@@ -23,8 +24,8 @@ public class EmptyHolder extends TzjViewHolder<Empty>{
     }
 
     @Override
-    public void onBind(Empty empty, int position) {
-        super.onBind(empty, position);
+    public void onBind(TzjAdapter adapter,Empty empty, int position) {
+        super.onBind(adapter,empty, position);
         imageView.setImageResource(empty.getImageRes());
         text.setText(empty.getText());
         hint.setText(empty.getHint());

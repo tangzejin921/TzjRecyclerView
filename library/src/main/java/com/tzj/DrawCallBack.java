@@ -39,7 +39,7 @@ public class DrawCallBack extends ItemTouchHelper.Callback {
         if (viewHolder.getItemViewType() == target.getItemViewType()) {
             RecyclerView.Adapter adapter = recyclerView.getAdapter();
             if (adapter instanceof AdapterDelegate) {
-                List<? extends IViewType> list = ((AdapterDelegate) adapter).getAdapter().getList();
+                List list = ((AdapterDelegate) adapter).getAdapter().getList();
                 Collections.swap(list, viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;

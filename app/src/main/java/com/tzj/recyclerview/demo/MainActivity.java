@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.tzj.recyclerview.IViewType;
 import com.tzj.recyclerview.TzjRecyclerView;
 import com.tzj.recyclerview.adapter.TzjAdapter;
@@ -57,6 +58,11 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
             @Override
             public void onClick(View v, int index) {
                 Toast.makeText(v.getContext(),list.get(index).toString(),Toast.LENGTH_LONG).show();
+                if (v.getId() == R.id.swipeMenu){
+                    list.remove(index);
+                    ((SwipeLayout) v.getParent()).close();
+                    mRecyclerView.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
     @Override
     public void onItemClick(TzjAdapter adapter, View v, int index, Object obj) {
         Toast.makeText(this,obj.toString(),Toast.LENGTH_LONG).show();
-        list.remove(index);
-        adapter.notifyDataSetChanged();
+//        list.remove(index);
+//        adapter.notifyDataSetChanged();
     }
 }

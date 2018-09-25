@@ -1,10 +1,10 @@
 package com.tzj.recyclerview.demo;
 
-import com.tzj.recyclerview.IViewType;
+import com.tzj.ISwipeViewType;
 import com.tzj.recyclerview.LayoutManager.GridLayoutManager;
 import com.tzj.recyclerview.holder.TzjViewHolder;
 
-public class Demo2Entity implements IViewType,GridLayoutManager.SpanSize{
+public class Demo2Entity implements ISwipeViewType,GridLayoutManager.SpanSize{
     public String s;
 
     public Demo2Entity(String s) {
@@ -18,11 +18,20 @@ public class Demo2Entity implements IViewType,GridLayoutManager.SpanSize{
 
     @Override
     public Class<? extends TzjViewHolder> holder() {
-        return TzjViewHolder.class;
+        return Demo2Holder.class;
     }
 
     @Override
     public int getSpanSize() {
         return 4;
     }
+
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipeLayout;
+    }
+
+
+
+
 }

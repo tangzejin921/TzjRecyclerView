@@ -10,11 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
 import com.tzj.recyclerview.LayoutManager.ILayoutManager;
 import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
+import com.tzj.recyclerview.TzjRecyclerView;
 
-
-public class AdapterDelegate extends RecyclerView.Adapter {
+public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapterInterface {
     private RecyclerView mRecyclerView;
 
     private EmptyAdapter emptyAdapter = new EmptyAdapter();
@@ -57,19 +58,27 @@ public class AdapterDelegate extends RecyclerView.Adapter {
         return currentAdapter.getItemCount();
     }
 
+    private int tempLastId;
     @Override
     public int getItemViewType(int position) {
-        return currentAdapter.getItemViewType(position);
+        return currentAdapter.getItemViewType(tempLastId = position);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return currentAdapter.onCreateViewHolder(parent, viewType);
+        RecyclerView.ViewHolder viewHolder = currentAdapter.onCreateViewHolder(parent, viewType);
+        if (mRecyclerView instanceof TzjRecyclerView && ((TzjRecyclerView)mRecyclerView).getItemManger()!=null){
+            ((TzjRecyclerView)mRecyclerView).getItemManger().onCreate(viewHolder.itemView,tempLastId);
+        }
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (mRecyclerView instanceof TzjRecyclerView && ((TzjRecyclerView)mRecyclerView).getItemManger()!=null){
+            ((TzjRecyclerView)mRecyclerView).getItemManger().bind(holder.itemView,position);
+        }
         currentAdapter.onBindViewHolder(holder, position);
     }
 
@@ -178,6 +187,19 @@ public class AdapterDelegate extends RecyclerView.Adapter {
                 return false;
             }
         }
+    }
+
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        if (currentAdapter instanceof TzjAdapter){
+            return ((TzjAdapter) currentAdapter).getSwipeLayoutResourceId(position);
+        }
+        return 0;
+    }
+
+    @Override
+    public void notifyDatasetChanged() {
+        super.notifyDataSetChanged();
     }
 }
 

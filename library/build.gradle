@@ -28,4 +28,5 @@ android {
 
 dependencies {
     api "com.android.support:recyclerview-v7:$_supportVersion"
+    api 'com.github.tzjandroid:AndroidSwipeLayout:3a5277ae21'
 }

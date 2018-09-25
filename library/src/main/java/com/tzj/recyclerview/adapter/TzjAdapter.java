@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.tzj.ISwipeViewType;
 import com.tzj.listener.NoDoubleOnClickListener;
 import com.tzj.recyclerview.IViewType;
 import com.tzj.recyclerview.R;
@@ -25,7 +27,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     /**
      * 如果不为空，用这里的内容
      */
-    private IViewType viewType;
+    private ISwipeViewType viewType;
     /**
      * 数据
      */
@@ -75,7 +77,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     public IViewType getViewType() {
         return viewType;
     }
-    public void setViewType(IViewType viewType) {
+    public void setViewType(ISwipeViewType viewType) {
         this.viewType = viewType;
     }
     public List<?> getList() {
@@ -133,6 +135,18 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
             }
         }
     }
+    public int getSwipeLayoutResourceId(int position) {
+        if (viewType!=null){
+            return viewType.getSwipeLayoutResourceId(position);
+        }else{
+            Object item = getItem(lastItemViewTypePosition);
+            if (item instanceof ISwipeViewType){
+                return ((ISwipeViewType) item).getSwipeLayoutResourceId(position);
+            }else{
+                return 0;
+            }
+        }
+    }
     public Class<? extends TzjViewHolder> getHolder(int index){
         if (viewType!=null){
             return viewType.holder();
@@ -159,13 +173,25 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        holder.itemView.setOnClickListener(itemListenerRelay);
+        //为了解决 SwipeLayout的不能点击问题
+        if (getSwipeLayoutResourceId(lastItemViewTypePosition)!=0){
+            SwipeLayout swipeLayout = (SwipeLayout) holder.itemView.findViewById(getSwipeLayoutResourceId(lastItemViewTypePosition));
+            holder.setSwipeLayout(swipeLayout);
+            swipeLayout.getChildAt(1).setOnClickListener(itemListenerRelay);
+        }else{
+            holder.itemView.setOnClickListener(itemListenerRelay);
+        }
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull TzjViewHolder holder, int position) {
-        holder.itemView.setTag(R.id.item_index_tag,position);
+        //为了解决 SwipeLayout的不能点击问题
+        if (holder.getSwipeLayout()!=null){
+            holder.getSwipeLayout().getChildAt(1).setTag(R.id.item_index_tag,position);
+        }else{
+            holder.itemView.setTag(R.id.item_index_tag,position);
+        }
         holder.onBind(this,getItem(position),position);
     }
 

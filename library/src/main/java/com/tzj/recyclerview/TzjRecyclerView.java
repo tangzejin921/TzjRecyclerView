@@ -7,6 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.implments.SwipeItemMangerImpl2;
+import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
+import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
+import com.daimajia.swipe.util.Attributes;
 import com.tzj.recyclerview.LayoutManager.GridLayoutManager;
 import com.tzj.recyclerview.LayoutManager.ILayoutManager;
 import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
@@ -19,7 +24,7 @@ import com.tzj.recyclerview.holder.TzjViewHolder;
 
 import java.util.List;
 
-public class TzjRecyclerView extends RecyclerView{
+public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInterface {
 
     public TzjRecyclerView(Context context) {
         super(context);
@@ -88,7 +93,15 @@ public class TzjRecyclerView extends RecyclerView{
         }
     }
 
-    public void setDivider(boolean leftRight,boolean topBottom){
+    @Override
+    public void setAdapter(Adapter adapter) {
+        super.setAdapter(adapter);
+        if (adapter instanceof SwipeAdapterInterface){
+            mItemManger = new SwipeItemMangerImpl2((SwipeAdapterInterface) adapter);
+        }
+    }
+
+    public void setDivider(boolean leftRight, boolean topBottom){
         dividerItemDecoration.setDivider(leftRight,topBottom);
         divider(leftRight,topBottom);
     }
@@ -182,14 +195,99 @@ public class TzjRecyclerView extends RecyclerView{
         }
     }
     public void setViewType(int r,Class<? extends TzjViewHolder> clzz){
+        setViewType(r,0,clzz);
+    }
+    public void setViewType(int r,int swipe,Class<? extends TzjViewHolder> clzz){
         DefaultViewType viewType = new DefaultViewType(null);
         viewType.setType(r);
+        viewType.setSwipeId(swipe);
         viewType.setClzz(clzz);
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate){
             ((AdapterDelegate) adapter).getAdapter().setViewType(viewType);
         }else{
             throw new RuntimeException();
+        }
+    }
+
+    //========================= SwipeLayout 相关============================
+    private SwipeItemMangerImpl2 mItemManger;
+
+    public SwipeItemMangerImpl2 getItemManger() {
+        return mItemManger;
+    }
+
+    @Override
+    public void openItem(int position) {
+        if (mItemManger!=null){
+            mItemManger.openItem(position);
+        }
+    }
+
+    @Override
+    public void closeItem(int position) {
+        if (mItemManger!=null){
+            mItemManger.closeItem(position);
+        }
+    }
+
+    @Override
+    public void closeAllExcept(SwipeLayout layout) {
+        if (mItemManger!=null){
+            mItemManger.closeAllExcept(layout);
+        }
+    }
+
+    @Override
+    public void closeAllItems() {
+        if (mItemManger!=null){
+            mItemManger.closeAllItems();
+        }
+    }
+
+    @Override
+    public List<Integer> getOpenItems() {
+        if (mItemManger!=null){
+            return mItemManger.getOpenItems();
+        }
+        return null;
+    }
+
+    @Override
+    public List<SwipeLayout> getOpenLayouts() {
+        if (mItemManger!=null){
+            return mItemManger.getOpenLayouts();
+        }
+        return null;
+    }
+
+    @Override
+    public void removeShownLayouts(SwipeLayout layout) {
+        if (mItemManger!=null){
+            mItemManger.removeShownLayouts(layout);
+        }
+    }
+
+    @Override
+    public boolean isOpen(int position) {
+        if (mItemManger!=null){
+            return mItemManger.isOpen(position);
+        }
+        return false;
+    }
+
+    @Override
+    public Attributes.Mode getMode() {
+        if (mItemManger!=null){
+            return mItemManger.getMode();
+        }
+        return null;
+    }
+
+    @Override
+    public void setMode(Attributes.Mode mode) {
+        if (mItemManger!=null){
+            mItemManger.setMode(mode);
         }
     }
 }

@@ -68,17 +68,17 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = currentAdapter.onCreateViewHolder(parent, viewType);
-        if (mRecyclerView instanceof TzjRecyclerView && ((TzjRecyclerView)mRecyclerView).getItemManger()!=null){
-            ((TzjRecyclerView)mRecyclerView).getItemManger().onCreate(viewHolder.itemView,tempLastId);
-        }
+//        if (mRecyclerView instanceof TzjRecyclerView && ((TzjRecyclerView)mRecyclerView).getItemManger()!=null){
+//            ((TzjRecyclerView)mRecyclerView).getItemManger().onCreate(viewHolder.itemView,tempLastId);
+//        }
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (mRecyclerView instanceof TzjRecyclerView && ((TzjRecyclerView)mRecyclerView).getItemManger()!=null){
-            ((TzjRecyclerView)mRecyclerView).getItemManger().bind(holder.itemView,position);
-        }
+//        if (mRecyclerView instanceof TzjRecyclerView && ((TzjRecyclerView)mRecyclerView).getItemManger()!=null){
+//            ((TzjRecyclerView)mRecyclerView).getItemManger().bind(holder.itemView,position);
+//        }
         currentAdapter.onBindViewHolder(holder, position);
     }
 

@@ -13,7 +13,7 @@ import com.tzj.recyclerview.adapter.TzjAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItemClickListener {
 
 
     private List<IViewType> list = new ArrayList<>();
@@ -30,15 +30,15 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
         list.add(new DemoEntity("sdfa"));
         list.add(new Demo2Entity("dfsg"));
         for (int i = 0; i < 9; i++) {
-            list.add(new DemoEntity("kl"+ i));
+            list.add(new DemoEntity("kl" + i));
         }
         list.add(new Demo2Entity("shfdf"));
 
         ;
         mRecyclerView = findViewById(R.id.recyclerView);
-        mRecyclerView.setDivider(50,0xFFFF0000);
-        mRecyclerView.setDivider(true,true);
-        mRecyclerView.setGridLayoutManager(5,true);
+        mRecyclerView.setDivider(true, true);
+        mRecyclerView.setDivider(50, 0xFFFF0000);
+        mRecyclerView.setGridLayoutManager(5, true);
 
         mRecyclerView.postDelayed(new Runnable() {
             @Override
@@ -50,15 +50,15 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
                         mRecyclerView.setList(list);
                         mRecyclerView.notifyDataSetChanged();
                     }
-                },5000);
+                }, 5000);
             }
-        },5000);
+        }, 5000);
         mRecyclerView.setItemClickListener(this);
         mRecyclerView.setClickListener(new TzjAdapter.OnClickIndexListener() {
             @Override
             public void onClick(View v, int index) {
-                Toast.makeText(v.getContext(),list.get(index).toString(),Toast.LENGTH_LONG).show();
-                if (v.getId() == R.id.swipeMenu){
+                Toast.makeText(v.getContext(), list.get(index).toString(), Toast.LENGTH_LONG).show();
+                if (v.getId() == R.id.swipeMenu) {
                     list.remove(index);
                     ((SwipeLayout) v.getParent()).close();
                     mRecyclerView.notifyDataSetChanged();
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
 
     @Override
     public void onItemClick(TzjAdapter adapter, View v, int index, Object obj) {
-        Toast.makeText(this,obj.toString(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this, obj.toString(), Toast.LENGTH_LONG).show();
 //        list.remove(index);
 //        adapter.notifyDataSetChanged();
     }

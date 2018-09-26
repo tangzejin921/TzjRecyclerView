@@ -30,22 +30,27 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         super(context);
         init();
     }
+
     public TzjRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
+
     public TzjRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
+
     private void init() {
     }
 
     //===================================================
     private DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), RecyclerView.VERTICAL);
+
     public void setLineLayoutManager() {
         setLineLayoutManager(VERTICAL);
     }
+
     /**
      * 线性布局
      */
@@ -54,23 +59,26 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         layoutManager.setOrientation(orientation);
         setLayoutManager(layoutManager);
     }
+
     /**
      * 网格布局
      */
     public void setGridLayoutManager(int spanCount) {
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount,false);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount, false);
         setLayoutManager(layoutManager);
     }
 
     /**
      * 网格布局
+     *
      * @param spanCount
-     * @param canSpan 为了性能考虑
+     * @param canSpan   为了性能考虑
      */
-    public void setGridLayoutManager(int spanCount,boolean canSpan) {
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount,canSpan);
+    public void setGridLayoutManager(int spanCount, boolean canSpan) {
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), spanCount, canSpan);
         setLayoutManager(layoutManager);
     }
+
     /**
      * 瀑布流布局(应当设置 setDivider(true,？) 不然布局会有一点问题)
      */
@@ -88,7 +96,7 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         } else {
             throw new RuntimeException("请用 ILayoutManager");
         }
-        if (getAdapter()==null){
+        if (getAdapter() == null) {
             setAdapter(new AdapterDelegate());
         }
     }
@@ -96,29 +104,39 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
-        if (adapter instanceof SwipeAdapterInterface){
+        if (adapter instanceof SwipeAdapterInterface) {
             mItemManger = new SwipeItemMangerImpl2((SwipeAdapterInterface) adapter);
         }
     }
 
-    public void setDivider(boolean leftRight, boolean topBottom){
-        dividerItemDecoration.setDivider(leftRight,topBottom);
-        divider(leftRight,topBottom);
+    /**
+     * 要在其他setDivider 之前调用
+     *
+     * @param leftRight 为 true RecyclerView 的padding 将不起作用
+     * @param topBottom 为 true RecyclerView 的padding 将不起作用
+     */
+    public void setDivider(boolean leftRight, boolean topBottom) {
+        dividerItemDecoration.setDivider(leftRight, topBottom);
+        divider(leftRight, topBottom);
     }
+
     /**
      *
      */
     public void setDivider(float px) {
-        setDivider(px,android.R.color.transparent);
+        setDivider(px, android.R.color.transparent);
     }
-    public void setDivider(final float px,int color) {
+
+    public void setDivider(final float px, int color) {
         removeItemDecoration(dividerItemDecoration);
         ColorDrawable colorDrawable = new ColorDrawable(color) {
             private int h = (int) px;
+
             @Override
             public int getIntrinsicHeight() {
                 return h;
             }
+
             @Override
             public int getIntrinsicWidth() {
                 return getIntrinsicHeight();
@@ -127,28 +145,28 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         dividerItemDecoration.setDrawable(colorDrawable);
         addItemDecoration(dividerItemDecoration);
         setBackgroundColor(color);
-        divider(dividerItemDecoration.isLeftRight(),dividerItemDecoration.isTopBottom());
+        divider(dividerItemDecoration.isLeftRight(), dividerItemDecoration.isTopBottom());
     }
 
-    private void divider(boolean leftRight,boolean topBottom){
+    private void divider(boolean leftRight, boolean topBottom) {
         Drawable drawable = dividerItemDecoration.getDrawable();
         int intrinsicHeight = drawable.getIntrinsicHeight();
-        int l=0;
-        int t=0;
-        int r=0;
-        int b=0;
-        if (intrinsicHeight>0){
-            if (leftRight){
-                l=intrinsicHeight/2;
-                r = intrinsicHeight/2;
+        int l = getPaddingLeft();
+        int t = getPaddingTop();
+        int r = getPaddingRight();
+        int b = getPaddingBottom();
+        if (intrinsicHeight > 0) {
+            if (leftRight) {
+                l = intrinsicHeight / 2;
+                r = intrinsicHeight / 2;
             }
-            if (topBottom){
-                t=intrinsicHeight/2;
-                b=intrinsicHeight/2;
+            if (topBottom) {
+                t = intrinsicHeight / 2;
+                b = intrinsicHeight / 2;
             }
         }
         setClipToPadding(false);
-        setPadding(l,t,r,b);
+        setPadding(l, t, r, b);
     }
 
 
@@ -156,56 +174,64 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     public void notifyDataSetChanged() {
         getAdapter().notifyDataSetChanged();
     }
+
     public void setItemClickListener(TzjAdapter.OnItemClickListener itemClickListener) {
         Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate){
+        if (adapter instanceof AdapterDelegate) {
             ((AdapterDelegate) adapter).getAdapter().setItemClickListener(itemClickListener);
         }
     }
+
     public void setClickListener(TzjAdapter.OnClickIndexListener clickListener) {
         Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate){
+        if (adapter instanceof AdapterDelegate) {
             ((AdapterDelegate) adapter).getAdapter().setClickListener(clickListener);
         }
     }
+
     public void setList(List list) {
         Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate){
+        if (adapter instanceof AdapterDelegate) {
             ((AdapterDelegate) adapter).getAdapter().setList(list);
         }
     }
+
     public void addList(List list) {
         Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate){
+        if (adapter instanceof AdapterDelegate) {
             ((AdapterDelegate) adapter).getAdapter().addList(list);
         }
     }
-    public void addItem(Object item){
+
+    public void addItem(Object item) {
         Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate){
+        if (adapter instanceof AdapterDelegate) {
             ((AdapterDelegate) adapter).getAdapter().addItem(item);
         }
     }
-    public Empty getEmpty(){
+
+    public Empty getEmpty() {
         Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate){
+        if (adapter instanceof AdapterDelegate) {
             return ((AdapterDelegate) adapter).getEmptyAdapter().getEmpty();
-        }else {
+        } else {
             throw new RuntimeException();
         }
     }
-    public void setViewType(int r,Class<? extends TzjViewHolder> clzz){
-        setViewType(r,0,clzz);
+
+    public void setViewType(int r, Class<? extends TzjViewHolder> clzz) {
+        setViewType(r, 0, clzz);
     }
-    public void setViewType(int r,int swipe,Class<? extends TzjViewHolder> clzz){
+
+    public void setViewType(int r, int swipe, Class<? extends TzjViewHolder> clzz) {
         DefaultViewType viewType = new DefaultViewType(null);
         viewType.setType(r);
         viewType.setSwipeId(swipe);
         viewType.setClzz(clzz);
         Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate){
+        if (adapter instanceof AdapterDelegate) {
             ((AdapterDelegate) adapter).getAdapter().setViewType(viewType);
-        }else{
+        } else {
             throw new RuntimeException();
         }
     }
@@ -219,35 +245,35 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
 
     @Override
     public void openItem(int position) {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             mItemManger.openItem(position);
         }
     }
 
     @Override
     public void closeItem(int position) {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             mItemManger.closeItem(position);
         }
     }
 
     @Override
     public void closeAllExcept(SwipeLayout layout) {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             mItemManger.closeAllExcept(layout);
         }
     }
 
     @Override
     public void closeAllItems() {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             mItemManger.closeAllItems();
         }
     }
 
     @Override
     public List<Integer> getOpenItems() {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             return mItemManger.getOpenItems();
         }
         return null;
@@ -255,7 +281,7 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
 
     @Override
     public List<SwipeLayout> getOpenLayouts() {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             return mItemManger.getOpenLayouts();
         }
         return null;
@@ -263,14 +289,14 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
 
     @Override
     public void removeShownLayouts(SwipeLayout layout) {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             mItemManger.removeShownLayouts(layout);
         }
     }
 
     @Override
     public boolean isOpen(int position) {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             return mItemManger.isOpen(position);
         }
         return false;
@@ -278,7 +304,7 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
 
     @Override
     public Attributes.Mode getMode() {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             return mItemManger.getMode();
         }
         return null;
@@ -286,7 +312,7 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
 
     @Override
     public void setMode(Attributes.Mode mode) {
-        if (mItemManger!=null){
+        if (mItemManger != null) {
             mItemManger.setMode(mode);
         }
     }

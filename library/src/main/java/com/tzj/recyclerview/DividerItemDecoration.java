@@ -21,7 +21,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
     private ILayoutManager layoutManager = null;
     private boolean leftRight;
-    private boolean topBottom=true;
+    private boolean topBottom = true;
 
     public DividerItemDecoration(Context ctx, int orientation) {
         TypedArray a = ctx.obtainStyledAttributes(ATTRS);
@@ -43,10 +43,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public void setLayoutManager(ILayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
+
     /**
      * 是否留边
      */
-    public void setDivider(boolean leftRight,boolean topBottom){
+    public void setDivider(boolean leftRight, boolean topBottom) {
         this.leftRight = leftRight;
         this.topBottom = topBottom;
     }
@@ -84,41 +85,40 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         Integer i = parent.getChildAdapterPosition(view);
         RecyclerView.Adapter adapter = parent.getAdapter();
 
-        int left = mDivider.getIntrinsicWidth()/2;
-        int top = mDivider.getIntrinsicWidth()/2;
-        int right = mDivider.getIntrinsicWidth()/2;
-        int bottom = mDivider.getIntrinsicWidth()/2;
+        int left = mDivider.getIntrinsicWidth() / 2;
+        int top = mDivider.getIntrinsicWidth() / 2;
+        int right = mDivider.getIntrinsicWidth() / 2;
+        int bottom = mDivider.getIntrinsicWidth() / 2;
         if (i != null) {
             Span span = layoutManager.getSpan(adapter.getItemCount(), i);
             boolean isFirstL = span.isFirstX();
             boolean isFirstH = span.isFirstY();
             boolean isLastL = span.isLastX();
             boolean isLastH = span.isLastY();
-            Log.e("test",isFirstL+"=="+isFirstH+"=="+isLastL+"=="+isLastH);
             if (this.layoutManager.getOrientation() == RecyclerView.VERTICAL) {
-                if (isFirstL&&!leftRight) {
+                if (isFirstL && !leftRight) {
                     left = 0;
                 }
-                if (isFirstH&&!topBottom) {
+                if (isFirstH && !topBottom) {
                     top = 0;
                 }
-                if (isLastH&&!topBottom) {
+                if (isLastH && !topBottom) {
                     bottom = 0;
                 }
-                if (isLastL&&!leftRight) {
+                if (isLastL && !leftRight) {
                     right = 0;
                 }
             } else {
-                if (isFirstL&&!leftRight) {
+                if (isFirstL && !leftRight) {
                     left = 0;
                 }
-                if (isFirstH&&!topBottom) {
+                if (isFirstH && !topBottom) {
                     top = 0;
                 }
-                if (isLastH&&!topBottom) {
+                if (isLastH && !topBottom) {
                     bottom = 0;
                 }
-                if (isLastL&&!leftRight) {
+                if (isLastL && !leftRight) {
                     right = 0;
                 }
             }

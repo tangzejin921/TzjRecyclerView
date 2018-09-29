@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
-    api "com.android.support:recyclerview-v7:$_supportVersion"
-    api 'com.github.tzjandroid:AndroidSwipeLayout:3a5277ae21'
+    compileOnly "com.android.support:recyclerview-v7:$_supportVersion"
+//    compileOnly project(':AndroidSwipeLayout')
+    api 'com.github.tzjandroid:AndroidSwipeLayout:1d0b2faa18'
 }

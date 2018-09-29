@@ -1,2 +1,4 @@
 include ':app'
 include ':library'
+//include ':AndroidSwipeLayout'
+//project(':AndroidSwipeLayout').projectDir = new File(rootProject.projectDir, '../AndroidSwipeLayout/library/')

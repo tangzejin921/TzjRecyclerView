@@ -44,6 +44,11 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     private void init() {
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        setAdapter(null);//这里让 AdapterDelegate 走 onDetachedFromRecyclerView
+    }
     //===================================================
     private DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), RecyclerView.VERTICAL);
 

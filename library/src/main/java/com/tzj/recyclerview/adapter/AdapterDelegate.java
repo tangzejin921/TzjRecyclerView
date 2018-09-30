@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
 import com.tzj.recyclerview.LayoutManager.ILayoutManager;
 import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
-import com.tzj.recyclerview.TzjRecyclerView;
 
 public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapterInterface {
     private RecyclerView mRecyclerView;
@@ -59,6 +58,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     }
 
     private int tempLastId;
+
     @Override
     public int getItemViewType(int position) {
         return currentAdapter.getItemViewType(tempLastId = position);
@@ -87,11 +87,11 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         super.onAttachedToRecyclerView(recyclerView);
         setmRecyclerView(recyclerView);//setAdapter 时会调用
         registerAdapterDataObserver(observer);
-        if (recyclerView.getContext()!=null){
+        if (recyclerView.getContext() != null) {
             receiver.setConnect(recyclerView.getContext());
             IntentFilter filter = new IntentFilter();
             filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            recyclerView.getContext().registerReceiver(receiver,filter);
+            recyclerView.getContext().registerReceiver(receiver, filter);
         }
     }
 
@@ -99,24 +99,25 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         unregisterAdapterDataObserver(observer);
-        if (recyclerView.getContext()!=null){
+        if (recyclerView.getContext() != null) {
             recyclerView.getContext().unregisterReceiver(receiver);
         }
     }
+
     //TODO 这里因为不同的LayoutManager 会导致 EmptyAdapter、NetErrAdapter、LoadingAdapter 展示有问题
     //TODO 现在这样写导致代码很乱
     private void setmRecyclerView(RecyclerView mRecyclerView) {
         this.mRecyclerView = mRecyclerView;
 
         RecyclerView.LayoutManager layoutManager = emptyAdapter.getLayoutManager();
-        if (layoutManager == null){
+        if (layoutManager == null) {
             LinearLayoutManager temp = new LinearLayoutManager(mRecyclerView.getContext());
             temp.setOrientation(RecyclerView.VERTICAL);
             layoutManager = temp;
         }
         emptyAdapter.setLayoutManager(layoutManager);
         netErrAdapter.setLayoutManager(layoutManager);
-        if (loadingAdapter!=null){
+        if (loadingAdapter != null) {
             loadingAdapter.setLayoutManager(layoutManager);
         }
         //RecyclerView 设置完 layoutManager 后调用
@@ -124,7 +125,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         if (temp != layoutManager && temp instanceof ILayoutManager) {
             adapter.setLayoutManager(temp);
         }
-        if (currentAdapter!=adapter){//setAdapter 时设置为其他的布局
+        if (currentAdapter != adapter) {//setAdapter 时设置为其他的布局
             mRecyclerView.setLayoutManager(layoutManager);
         }
     }
@@ -133,19 +134,19 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     private void notifyDataChanged() {
         loadingAdapter = null;
         RecyclerView.Adapter lastAdapter = currentAdapter;//上一次的 Adapter
-        if (receiver.isConnect()){
+        if (receiver.isConnect()) {
             if (adapter.getList().size() == 0) {
                 currentAdapter = emptyAdapter;
             } else {
                 currentAdapter = adapter;
             }
-        }else{
+        } else {
             currentAdapter = netErrAdapter;
         }
         if (lastAdapter != currentAdapter && lastAdapter instanceof TzjAdapter) {
             RecyclerView.LayoutManager layoutManager = ((TzjAdapter) currentAdapter).getLayoutManager();
             mRecyclerView.setLayoutManager(layoutManager);
-            if (currentAdapter == adapter){
+            if (currentAdapter == adapter) {
                 currentAdapter.onAttachedToRecyclerView(mRecyclerView);//为了 GridLayout 的 span 设置
             }
         }
@@ -165,20 +166,23 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         public boolean isConnect() {
             return isConnect;
         }
+
         public void setConnect(Context connect) {
             isConnect = connect(connect);
         }
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 boolean temp = connect(context);
-                if (temp != isConnect){
+                if (temp != isConnect) {
                     isConnect = temp;
                     notifyDataChanged();
                 }
             }
         }
-        private boolean connect(Context ctx){
+
+        private boolean connect(Context ctx) {
             ConnectivityManager manager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
             if (activeNetwork != null && activeNetwork.isConnected()) { // 连接上网络
@@ -191,7 +195,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
 
     @Override
     public int getSwipeLayoutResourceId(int position) {
-        if (currentAdapter instanceof TzjAdapter){
+        if (currentAdapter instanceof TzjAdapter) {
             return ((TzjAdapter) currentAdapter).getSwipeLayoutResourceId(position);
         }
         return 0;

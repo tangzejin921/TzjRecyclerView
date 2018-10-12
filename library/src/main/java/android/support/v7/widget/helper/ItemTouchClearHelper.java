@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * todo 复制 support 27.1.1 里的 ItemTouchHelper
+ * todo 复制 support 27.1.1 里的 ItemTouchHelper, values
  */
 public class ItemTouchClearHelper extends RecyclerView.ItemDecoration
         implements RecyclerView.OnChildAttachStateChangeListener {

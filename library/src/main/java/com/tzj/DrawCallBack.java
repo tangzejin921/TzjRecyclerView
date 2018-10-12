@@ -3,9 +3,9 @@ package com.tzj;
 import android.graphics.Canvas;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchClearHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.tzj.recyclerview.IViewType;
 import com.tzj.recyclerview.adapter.AdapterDelegate;
 
 import java.util.Collections;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * RecyclerView 的交换
  */
-public class DrawCallBack extends ItemTouchHelper.Callback {
+public class DrawCallBack extends ItemTouchClearHelper.Callback {
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {

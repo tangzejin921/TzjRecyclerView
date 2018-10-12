@@ -54,8 +54,8 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         super.onAttachedToWindow();
         if (detachedAdapter != null && getAdapter() == null) {
             setAdapter(detachedAdapter);
-            detachedAdapter = null;
         }
+        detachedAdapter = null;
     }
 
     @Override

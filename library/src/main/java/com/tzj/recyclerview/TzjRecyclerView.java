@@ -44,11 +44,26 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     private void init() {
     }
 
+    /**
+     * onDetachedFromWindow 时记录的adapter
+     */
+    private Adapter detachedAdapter;
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (detachedAdapter != null && getAdapter() == null) {
+            setAdapter(detachedAdapter);
+        }
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        detachedAdapter = getAdapter();
         setAdapter(null);//这里让 AdapterDelegate 走 onDetachedFromRecyclerView
     }
+
     //===================================================
     private DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), RecyclerView.VERTICAL);
 
@@ -177,7 +192,10 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
 
     //=========================adapter 的方法============================
     public void notifyDataSetChanged() {
-        getAdapter().notifyDataSetChanged();
+        Adapter adapter = getAdapter();
+        if (adapter!=null){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void setItemClickListener(TzjAdapter.OnItemClickListener itemClickListener) {

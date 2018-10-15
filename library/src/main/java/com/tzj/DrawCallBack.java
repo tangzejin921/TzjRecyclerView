@@ -1,8 +1,10 @@
 package com.tzj;
 
 import android.graphics.Canvas;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchClearHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
@@ -18,18 +20,17 @@ public class DrawCallBack extends ItemTouchClearHelper.Callback {
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        int dragFlags = 0;
-        int swipeFlags = 0;
+        int dragFlags = 0;//拖动
+        int swipeFlags = 0;//滑动
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        if (layoutManager instanceof LinearLayoutManager) {
+        if (layoutManager instanceof GridLayoutManager || layoutManager instanceof StaggeredGridLayoutManager) {
+            dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchClearHelper.START | ItemTouchClearHelper.END;
+        } else {
             if (((LinearLayoutManager) layoutManager).getOrientation() == LinearLayoutManager.VERTICAL) {
                 dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
             } else {
                 dragFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
             }
-        } else {
-            dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-            swipeFlags = 0;
         }
         return makeMovementFlags(dragFlags, swipeFlags); //该方法指定可进行的操作
     }
@@ -57,10 +58,10 @@ public class DrawCallBack extends ItemTouchClearHelper.Callback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
-            if (isCurrentlyActive) {
+            if (isCurrentlyActive) {//选中
                 viewHolder.itemView.setScaleX(0.9f);
                 viewHolder.itemView.setScaleY(0.9f);
-            } else {
+            } else {//松开
                 viewHolder.itemView.setScaleX(1f);
                 viewHolder.itemView.setScaleY(1f);
             }

@@ -36,7 +36,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     /**
      * 网络监听
      */
-    private NetBroadcastReceiver receiver = new NetBroadcastReceiver();
+    private NetBroadcastReceiver receiver = new NetBroadcastReceiver(this);
 
     public AdapterDelegate() {
         //todo 这里会导致内存泄漏吗？
@@ -88,10 +88,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         setmRecyclerView(recyclerView);//setAdapter 时会调用
         registerAdapterDataObserver(observer);
         if (recyclerView.getContext() != null) {
-            receiver.setConnect(recyclerView.getContext());
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            recyclerView.getContext().registerReceiver(receiver, filter);
+            receiver.registerReceiver(recyclerView.getContext());
         }
     }
 
@@ -100,7 +97,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         super.onDetachedFromRecyclerView(recyclerView);
         unregisterAdapterDataObserver(observer);
         if (recyclerView.getContext() != null) {
-            recyclerView.getContext().unregisterReceiver(receiver);
+            receiver.unRegisterReceiver(recyclerView.getContext());
         }
     }
 
@@ -160,8 +157,18 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         return loadingAdapter;
     }
 
-    class NetBroadcastReceiver extends BroadcastReceiver {
+    public static class NetBroadcastReceiver extends BroadcastReceiver {
         private boolean isConnect;
+        private static final String checkNetBroadcast = "com.tzj.recyclerview.adapter.CHECK_NETWORK";
+        public static void sendBroadcast(Context ctx){
+            Intent intent = new Intent(checkNetBroadcast);
+            ctx.sendBroadcast(intent);
+        }
+        private AdapterDelegate adapter;
+
+        public NetBroadcastReceiver(AdapterDelegate adapter) {
+            this.adapter = adapter;
+        }
 
         public boolean isConnect() {
             return isConnect;
@@ -171,13 +178,26 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
             isConnect = connect(connect);
         }
 
+        public void registerReceiver(Context ctx){
+            setConnect(ctx);
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            filter.addAction(Intent.ACTION_SCREEN_ON);
+            filter.addAction(checkNetBroadcast);
+            ctx.registerReceiver(this, filter);
+        }
+        public void unRegisterReceiver(Context ctx){
+            ctx.unregisterReceiver(this);
+        }
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)
+                    || intent.getAction().equals(Intent.ACTION_SCREEN_ON)
+                    || intent.getAction().equals(checkNetBroadcast)) {
                 boolean temp = connect(context);
                 if (temp != isConnect) {
                     isConnect = temp;
-                    notifyDataChanged();
+                    adapter.notifyDataChanged();
                 }
             }
         }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.tzj.recyclerview.R;
+import com.tzj.recyclerview.adapter.AdapterDelegate;
 import com.tzj.recyclerview.entity.NetErr;
 
 public class NetErrHolder extends TzjViewHolder<NetErr>{
@@ -16,8 +17,10 @@ public class NetErrHolder extends TzjViewHolder<NetErr>{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                v.getContext().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)); //直接进入手机中的wifi网络设置界面
-                v.getContext().startActivity(new Intent(Settings.ACTION_SETTINGS)); //直接进入手机中设置界面
+                AdapterDelegate.NetBroadcastReceiver.sendBroadcast(v.getContext());
+                v.getContext().startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)); //直接进入手机中的wifi网络设置界面
+//                v.getContext().startActivity(new Intent(Settings.ACTION_SETTINGS)); //直接进入手机中设置界面
+
             }
         });
     }

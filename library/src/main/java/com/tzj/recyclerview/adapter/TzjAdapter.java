@@ -218,8 +218,8 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     /**
      * itemClick
      */
-    public interface OnItemClickListener{
-        void onItemClick(TzjAdapter adapter,View v,int index,Object obj);
+    public interface OnItemClickListener<T>{
+        void onItemClick(TzjAdapter adapter,View v,int index,T obj);
     }
 
     /**

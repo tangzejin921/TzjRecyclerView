@@ -169,6 +169,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         try {
             Constructor<? extends TzjViewHolder> constructor = holer.getConstructor(View.class);
             holder = constructor.newInstance(inflate);
+            holder.onCreateView(parent.getContext(),this,holder.itemView);
             holder.setListener(listenerRelay);
         } catch (Exception e) {
             throw new RuntimeException(e);

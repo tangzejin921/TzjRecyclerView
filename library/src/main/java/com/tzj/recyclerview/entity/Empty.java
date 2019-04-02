@@ -7,8 +7,8 @@ import com.tzj.recyclerview.holder.TzjViewHolder;
 
 public class Empty implements IViewType {
     private int imageRes = R.drawable.empty;
-    private String text = "暂无数据";
-    private String hint = "";
+    private CharSequence text = "暂无数据";
+    private CharSequence hint = "";
 
     public int getImageRes() {
         return imageRes;
@@ -18,19 +18,19 @@ public class Empty implements IViewType {
         this.imageRes = imageRes;
     }
 
-    public String getText() {
+    public CharSequence getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(CharSequence text) {
         this.text = text;
     }
 
-    public String getHint() {
+    public CharSequence getHint() {
         return hint;
     }
 
-    public void setHint(String hint) {
+    public void setHint(CharSequence hint) {
         this.hint = hint;
     }
 

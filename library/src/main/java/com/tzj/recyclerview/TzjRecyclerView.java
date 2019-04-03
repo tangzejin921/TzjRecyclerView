@@ -199,6 +199,9 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         }
     }
 
+    /**
+     * item 的点击事件
+     */
     public void setItemClickListener(TzjAdapter.OnItemClickListener itemClickListener) {
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate) {
@@ -206,6 +209,19 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         }
     }
 
+    /**
+     * item 的长按事件
+     */
+    public void setItemClickListener(TzjAdapter.OnItemLongClickListener itemClickListener) {
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate) {
+            ((AdapterDelegate) adapter).getAdapter().setItemLongClickListener(itemClickListener);
+        }
+    }
+
+    /**
+     * item 内部的子View 点击事件
+     */
     public void setClickListener(TzjAdapter.OnClickIndexListener clickListener) {
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate) {

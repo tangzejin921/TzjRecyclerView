@@ -209,6 +209,11 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         }
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     @NonNull
     @Override
     public TzjViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

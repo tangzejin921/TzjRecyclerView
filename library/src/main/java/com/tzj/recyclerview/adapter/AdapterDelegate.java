@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
@@ -45,7 +46,32 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
+                super.onChanged();
                 notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+                notifyItemRangeChanged(positionStart,itemCount);
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                notifyItemRangeInserted(positionStart,itemCount);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                notifyItemRangeRemoved(positionStart,itemCount);
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+                notifyItemMoved(fromPosition,toPosition);
             }
         });
     }
@@ -94,6 +120,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         super.onAttachedToRecyclerView(recyclerView);
         setmRecyclerView(recyclerView);//setAdapter 时会调用
         registerAdapterDataObserver(observer);
+        Log.e("test","registerAdapterDataObserver");
         if (recyclerView.getContext() != null) {
             receiver.registerReceiver(recyclerView.getContext());
         }
@@ -103,6 +130,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         unregisterAdapterDataObserver(observer);
+        Log.e("test","unregisterAdapterDataObserver");
         if (recyclerView.getContext() != null) {
             receiver.unRegisterReceiver(recyclerView.getContext());
         }
@@ -134,7 +162,9 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         }
     }
 
-
+    /**
+     *
+     */
     private void notifyDataChanged() {
         loadingAdapter = null;
         RecyclerView.Adapter lastAdapter = currentAdapter;//上一次的 Adapter

@@ -11,7 +11,10 @@ import com.tzj.recyclerview.adapter.TzjAdapter;
 public class TzjViewHolder<D> extends RecyclerView.ViewHolder {
     protected View.OnClickListener listener;
     protected SwipeLayout swipeLayout;
-
+    /**
+     * 是否 binded 了
+     */
+    public boolean isFirstBinded = false;
 
     /**
      * view 的点击事件

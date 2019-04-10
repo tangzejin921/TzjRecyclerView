@@ -250,6 +250,10 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
             holder.itemView.setTag(R.id.item_index_tag, position);
         }
         holder.onBind(this, getItem(position), position);
+        if (!holder.isFirstBinded){
+            //第一次
+            holder.isFirstBinded = true;
+        }
     }
 
     @Override

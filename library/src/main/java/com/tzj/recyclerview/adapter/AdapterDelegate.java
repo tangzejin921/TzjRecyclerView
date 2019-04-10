@@ -16,15 +16,36 @@ import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
 
 public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapterInterface {
     private RecyclerView mRecyclerView;
-
+    /**
+     * 空类容的 adapter
+     */
     private EmptyAdapter emptyAdapter = new EmptyAdapter();
+    /**
+     * 网络异常的 adapter
+     */
     private NetErrAdapter netErrAdapter = new NetErrAdapter();
+    /**
+     * 加载中的 adapter
+     */
     private LoadingAdapter loadingAdapter = new LoadingAdapter();
+    /**
+     * 真实数据的 adapter
+     */
     private TzjAdapter adapter = new TzjAdapter();
-
+    /**
+     * 当前的 Adapter
+     */
     private RecyclerView.Adapter currentAdapter = loadingAdapter;
 
     /**
+     * 记录调用了 notifyDatasetChanged
+     * 如果 onAttachedToRecyclerView 之前调用，并不会刷新，
+     * 所以记录下，等 onAttachedToRecyclerView 后调用刷新
+     */
+    private boolean notifyDatasetChanged = false;
+
+    /**
+     * 调用刷新时，切换 adapter
      * notifyDataChanged
      */
     private RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
@@ -41,7 +62,10 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     public AdapterDelegate() {
         setHasStableIds(true);
         adapter.setHasStableIds(true);
-        //todo 这里会导致内存泄漏吗？
+        /**
+         * todo 这里会导致内存泄漏吗？
+         * 这里是让 具体的 adapter  可以调用 刷新
+         */
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -111,6 +135,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
 //        if (mRecyclerView instanceof TzjRecyclerView && ((TzjRecyclerView)mRecyclerView).getItemManger()!=null){
 //            ((TzjRecyclerView)mRecyclerView).getItemManger().bind(holder.itemView,position);
 //        }
+        notifyDatasetChanged = false;
         currentAdapter.onBindViewHolder(holder, position);
     }
 
@@ -118,19 +143,23 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         setmRecyclerView(recyclerView);//setAdapter 时会调用
-        registerAdapterDataObserver(observer);
         if (recyclerView.getContext() != null) {
             receiver.registerReceiver(recyclerView.getContext());
+        }
+        registerAdapterDataObserver(observer);
+        if (notifyDatasetChanged){
+            notifyDatasetChanged();
+            notifyDatasetChanged = false;
         }
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        unregisterAdapterDataObserver(observer);
         if (recyclerView.getContext() != null) {
             receiver.unRegisterReceiver(recyclerView.getContext());
         }
+        unregisterAdapterDataObserver(observer);
     }
 
     //TODO 这里因为不同的LayoutManager 会导致 EmptyAdapter、NetErrAdapter、LoadingAdapter 展示有问题
@@ -160,7 +189,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     }
 
     /**
-     *
+     * 调用刷新时，切换 adapter
      */
     private void notifyDataChanged() {
         loadingAdapter = null;
@@ -257,6 +286,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
 
     @Override
     public void notifyDatasetChanged() {
+        notifyDatasetChanged = true;
         super.notifyDataSetChanged();
     }
 }

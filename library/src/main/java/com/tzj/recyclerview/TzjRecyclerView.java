@@ -271,7 +271,9 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate) {
             ((AdapterDelegate) adapter).getAdapter().setViewType(viewType);
-        } else {
+        } else if (adapter instanceof TzjAdapter){
+            ((TzjAdapter) adapter).setViewType(viewType);
+        }else {
             throw new RuntimeException();
         }
     }

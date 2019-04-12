@@ -203,51 +203,33 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
      * item 的点击事件
      */
     public void setItemClickListener(TzjAdapter.OnItemClickListener itemClickListener) {
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            ((AdapterDelegate) adapter).getAdapter().setItemClickListener(itemClickListener);
-        }
+        getTzjAdapter().setItemClickListener(itemClickListener);
     }
 
     /**
      * item 的长按事件
      */
     public void setItemClickListener(TzjAdapter.OnItemLongClickListener itemClickListener) {
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            ((AdapterDelegate) adapter).getAdapter().setItemLongClickListener(itemClickListener);
-        }
+        getTzjAdapter().setItemLongClickListener(itemClickListener);
     }
 
     /**
      * item 内部的子View 点击事件
      */
     public void setClickListener(TzjAdapter.OnClickIndexListener clickListener) {
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            ((AdapterDelegate) adapter).getAdapter().setClickListener(clickListener);
-        }
+        getTzjAdapter().setClickListener(clickListener);
     }
 
     public void setList(List list) {
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            ((AdapterDelegate) adapter).getAdapter().setList(list);
-        }
+        getTzjAdapter().setList(list);
     }
 
     public void addList(List list) {
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            ((AdapterDelegate) adapter).getAdapter().addList(list);
-        }
+        getTzjAdapter().addList(list);
     }
 
     public void addItem(Object item) {
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            ((AdapterDelegate) adapter).getAdapter().addItem(item);
-        }
+        getTzjAdapter().addItem(item);
     }
 
     public Empty getEmpty() {
@@ -268,16 +250,22 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         viewType.setType(r);
         viewType.setSwipeId(swipe);
         viewType.setClzz(clzz);
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            ((AdapterDelegate) adapter).getAdapter().setViewType(viewType);
-        } else if (adapter instanceof TzjAdapter){
-            ((TzjAdapter) adapter).setViewType(viewType);
-        }else {
-            throw new RuntimeException();
-        }
+        getTzjAdapter().setViewType(viewType);
     }
 
+    /**
+     * 都到真实的 Adapter
+     */
+    public TzjAdapter getTzjAdapter(){
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate) {
+            adapter = ((AdapterDelegate) adapter).getAdapter();
+        }
+        if (adapter instanceof TzjAdapter){
+            return (TzjAdapter) adapter;
+        }
+        throw new RuntimeException("请用 TzjAdapter");
+    }
     //========================= SwipeLayout 相关============================
     private SwipeItemMangerImpl2 mItemManger;
 

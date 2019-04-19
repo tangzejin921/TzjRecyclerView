@@ -232,11 +232,15 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         if (getSwipeLayoutResourceId(lastItemViewTypePosition) != 0) {
             SwipeLayout swipeLayout = (SwipeLayout) holder.itemView.findViewById(getSwipeLayoutResourceId(lastItemViewTypePosition));
             holder.setSwipeLayout(swipeLayout);
-            swipeLayout.getChildAt(1).setOnClickListener(itemListenerRelay);
-            swipeLayout.getChildAt(1).setOnLongClickListener(itemLongListenerRelay);
+            if (holder.onClickable()){
+                swipeLayout.getChildAt(1).setOnClickListener(itemListenerRelay);
+                swipeLayout.getChildAt(1).setOnLongClickListener(itemLongListenerRelay);
+            }
         } else {
-            holder.itemView.setOnClickListener(itemListenerRelay);
-            holder.itemView.setOnLongClickListener(itemLongListenerRelay);
+            if (holder.onClickable()){
+                holder.itemView.setOnClickListener(itemListenerRelay);
+                holder.itemView.setOnLongClickListener(itemLongListenerRelay);
+            }
         }
         return holder;
     }
@@ -246,13 +250,8 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         //为了解决 SwipeLayout的不能点击问题
         if (holder.getSwipeLayout() != null) {
             holder.getSwipeLayout().getChildAt(1).setTag(R.id.item_index_tag, position);
-            //为了 嵌套时可以屏蔽内部点击事件
-            holder.getSwipeLayout().getChildAt(1).setClickable(
-                    itemLongClickListener != null || itemClickListener != null || clickListener != null);
         } else {
             holder.itemView.setTag(R.id.item_index_tag, position);
-            holder.itemView.setClickable(
-                    itemLongClickListener != null || itemClickListener != null || clickListener != null);
         }
         holder.onBind(this, getItem(position), position);
         if (!holder.isFirstBinded){

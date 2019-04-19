@@ -67,4 +67,10 @@ public class TzjViewHolder<D> extends RecyclerView.ViewHolder {
         view.setOnClickListener(listener);
     }
 
+    /**
+     *
+     */
+    public boolean onClickable(){
+        return true;
+    }
 }

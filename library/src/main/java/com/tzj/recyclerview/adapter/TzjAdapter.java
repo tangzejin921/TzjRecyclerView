@@ -246,8 +246,13 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         //为了解决 SwipeLayout的不能点击问题
         if (holder.getSwipeLayout() != null) {
             holder.getSwipeLayout().getChildAt(1).setTag(R.id.item_index_tag, position);
+            //为了 嵌套时可以屏蔽内部点击事件
+            holder.getSwipeLayout().getChildAt(1).setClickable(
+                    itemLongClickListener != null || itemClickListener != null || clickListener != null);
         } else {
             holder.itemView.setTag(R.id.item_index_tag, position);
+            holder.itemView.setClickable(
+                    itemLongClickListener != null || itemClickListener != null || clickListener != null);
         }
         holder.onBind(this, getItem(position), position);
         if (!holder.isFirstBinded){

@@ -67,7 +67,7 @@ public class DrawCallBack extends ItemTouchClearHelper.Callback {
             }
         }
     }
-
+    @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
         viewHolder.itemView.setScaleX(1f);

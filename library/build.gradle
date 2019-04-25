@@ -34,3 +34,9 @@ dependencies {
 //    compileOnly project(':AndroidSwipeLayout')
     api 'com.github.tzjandroid:AndroidSwipeLayout:1d0b2faa18'
 }
+
+
+apply plugin: 'com.github.dcendents.android-maven'
+group = "com.tzj.recyclerview"
+version = android.defaultConfig.versionName
+

@@ -23,6 +23,6 @@ android {
 }
 
 dependencies {
-    implementation project(':library')
+    implementation project(':TzjRecyclerView')
     implementation "com.android.support:design:$_supportVersion"
 }

@@ -40,3 +40,18 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = "com.tzj.recyclerview"
 version = android.defaultConfig.versionName
 
+apply plugin: 'maven'
+uploadArchives{
+    repositories {
+        mavenDeployer {
+            //TODO 不会获取用户目录，所以改用另一种方法
+            repository(url: 'file:///Users/mac/.m2/repository')
+            // 唯一标识
+            pom.groupId = "com.tzj.recyclerview"
+            // 项目名称
+            pom.artifactId = rootProject.getName()
+            // 版本号
+            pom.version = android.defaultConfig.versionName
+        }
+    }
+}

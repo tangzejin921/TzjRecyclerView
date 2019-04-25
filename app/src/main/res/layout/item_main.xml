@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFF"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/textView"
+    <data>
+        <variable
+            name="TzjViewHolder"
+            type="com.tzj.recyclerview.holder.TzjViewHolder"/>
+        <variable
+            name="DemoEntity"
+            type="com.tzj.recyclerview.demo.DemoEntity"/>
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:gravity="center"
-        android:text="lskdfjs d"/>
+        android:background="#FFF"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@{DemoEntity.s}" />
+
+    </LinearLayout>
+</layout>

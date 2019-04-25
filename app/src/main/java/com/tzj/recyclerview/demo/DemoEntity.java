@@ -24,6 +24,6 @@ public class DemoEntity implements IViewType{
 
     @Override
     public Class<? extends TzjViewHolder> holder() {
-        return DemoHolder.class;
+        return TzjViewHolder.class;
     }
 }

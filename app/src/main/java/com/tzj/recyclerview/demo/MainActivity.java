@@ -2,6 +2,7 @@ package com.tzj.recyclerview.demo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
         mRecyclerView.setClickListener(new TzjAdapter.OnClickIndexListener() {
             @Override
             public void onClick(View v, int index) {
-                Toast.makeText(v.getContext(), list.get(index).toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "====="+list.get(index).toString(), Toast.LENGTH_LONG).show();
                 if (v.getId() == R.id.swipeMenu) {
                     list.remove(index);
                     ((SwipeLayout) v.getParent()).close();
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements TzjAdapter.OnItem
 
     @Override
     public void onItemClick(TzjAdapter adapter, View v, int index, Object obj) {
-        Toast.makeText(this, obj.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "-----"+obj.toString(), Toast.LENGTH_LONG).show();
 //        list.remove(index);
 //        adapter.notifyDataSetChanged();
     }

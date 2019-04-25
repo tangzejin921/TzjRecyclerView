@@ -18,7 +18,7 @@ public class Demo2Entity implements ISwipeViewType,GridLayoutManager.SpanSize{
 
     @Override
     public Class<? extends TzjViewHolder> holder() {
-        return Demo2Holder.class;
+        return TzjViewHolder.class;
     }
 
     @Override
@@ -30,8 +30,5 @@ public class Demo2Entity implements ISwipeViewType,GridLayoutManager.SpanSize{
     public int getSwipeLayoutResourceId(int position) {
         return R.id.swipeLayout;
     }
-
-
-
 
 }

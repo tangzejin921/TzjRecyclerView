@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.tzj.recyclerview.TzjRecyclerView;
 import com.tzj.recyclerview.adapter.TzjAdapter;
+import com.tzj.recyclerview.demo.DemoEntity;
 import com.tzj.recyclerview.demo.R;
 import com.tzj.recyclerview.holder.TzjViewHolder;
 
@@ -26,7 +27,6 @@ public class ParentHolder extends TzjViewHolder<Integer> {
     public ParentHolder(final View itemView) {
         super(itemView);
         recyclerView = bind(R.id.recyclerView);
-        recyclerView.setLayoutFrozen(true);
     }
 
     @Override
@@ -35,12 +35,14 @@ public class ParentHolder extends TzjViewHolder<Integer> {
         list.clear();
         int count = new Random().nextInt(10);
         for (int j = 0; j < count; j++) {
-            list.add(""+i);
+            list.add(new DemoEntity(""+i));
         }
         if (recyclerView.getAdapter() == null){
             recyclerView.setGridLayoutManager(3);
-            recyclerView.setViewType(R.layout.item_main, ChildHolder.class);
+            recyclerView.setViewType(R.layout.item_main, TzjViewHolder.class);
             recyclerView.setList(list);
+            //这里可以屏蔽点击事件
+            recyclerView.setLayoutFrozen(true);
         }
         recyclerView.notifyDataSetChanged();
     }

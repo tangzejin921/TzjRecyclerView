@@ -24,10 +24,13 @@ android {
         }
     }
 
+    dataBinding{
+        enabled = true
+    }
 }
 
 dependencies {
-    compileOnly "com.android.support:recyclerview-v7:$_supportVersion"
+    implementation "com.android.support:recyclerview-v7:$_supportVersion"
 //    compileOnly project(':AndroidSwipeLayout')
     api 'com.github.tzjandroid:AndroidSwipeLayout:1d0b2faa18'
 }

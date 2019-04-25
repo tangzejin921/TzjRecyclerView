@@ -158,9 +158,11 @@ public class DemoHolder extends TzjViewHolder<String> {
 ### 侧滑菜单问题
 内部应用了AndroidSwipeLayout
 
-注意2点：
+item点击不了 注意2点：
 1. setViewType(int r, int swipe, Class<? extends TzjViewHolder> clzz)，要调用这个方法
-2. 要在 item 外面嵌套一层，不能 用 com.daimajia.swipe.SwipeLayout 做为外层，会导致item点击不了
+2. 或者实现接口改为 ISwipeViewType
+
+你还可以 在 item 外面嵌套一层
 
 ### 常按排序问题
 通过类 DrawCallBack 实现

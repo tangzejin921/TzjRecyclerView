@@ -51,7 +51,8 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     private RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
         @Override
         public void onChanged() {
-            notifyDataChanged();
+            //TODO 要保持这个 在 getItemCount前调用
+            changeAdapterAndNotify();
         }
     };
     /**
@@ -191,23 +192,25 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     /**
      * 调用刷新时，切换 adapter
      */
-    private void notifyDataChanged() {
-        loadingAdapter = null;
-        RecyclerView.Adapter lastAdapter = currentAdapter;//上一次的 Adapter
-        if (receiver.isConnect()) {
-            if (adapter.getList().size() == 0) {
-                currentAdapter = emptyAdapter;
+    private void changeAdapterAndNotify() {
+        synchronized (currentAdapter){
+            loadingAdapter = null;
+            RecyclerView.Adapter lastAdapter = currentAdapter;//上一次的 Adapter
+            if (receiver.isConnect()) {
+                if (adapter.getList().size() == 0) {
+                    currentAdapter = emptyAdapter;
+                } else {
+                    currentAdapter = adapter;
+                }
             } else {
-                currentAdapter = adapter;
+                currentAdapter = netErrAdapter;
             }
-        } else {
-            currentAdapter = netErrAdapter;
-        }
-        if (lastAdapter != currentAdapter && lastAdapter instanceof TzjAdapter) {
-            RecyclerView.LayoutManager layoutManager = ((TzjAdapter) currentAdapter).getLayoutManager();
-            mRecyclerView.setLayoutManager(layoutManager);
-            if (currentAdapter == adapter) {
-                currentAdapter.onAttachedToRecyclerView(mRecyclerView);//为了 GridLayout 的 span 设置
+            if (lastAdapter != currentAdapter && lastAdapter instanceof TzjAdapter) {
+                RecyclerView.LayoutManager layoutManager = ((TzjAdapter) currentAdapter).getLayoutManager();
+                mRecyclerView.setLayoutManager(layoutManager);
+                if (currentAdapter == adapter) {
+                    currentAdapter.onAttachedToRecyclerView(mRecyclerView);//为了 GridLayout 的 span 设置
+                }
             }
         }
     }

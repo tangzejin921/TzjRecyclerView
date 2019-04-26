@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:background="#00ff00"
             android:padding="50dp"
-            android:onClick="@{TzjViewHolder.onClick}"
+            android:onClick="@{TzjViewHolder::onClick}"
             android:text="@{Demo2Entity.s}" />
 
     </com.daimajia.swipe.SwipeLayout>

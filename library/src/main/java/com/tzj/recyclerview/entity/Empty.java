@@ -9,6 +9,11 @@ public class Empty implements IViewType {
     private int imageRes = R.drawable.empty;
     private CharSequence text = "暂无数据";
     private CharSequence hint = "";
+    private int layoutId = R.layout.view_empty;
+
+    public void setLayoutId(int layoutId) {
+        this.layoutId = layoutId;
+    }
 
     public int getImageRes() {
         return imageRes;
@@ -36,7 +41,7 @@ public class Empty implements IViewType {
 
     @Override
     public int type() {
-        return R.layout.view_empty;
+        return layoutId;
     }
 
     @Override

@@ -219,6 +219,10 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
         return emptyAdapter;
     }
 
+    public NetErrAdapter getNetErrAdapter() {
+        return netErrAdapter;
+    }
+
     public LoadingAdapter getLoadingAdapter() {
         return loadingAdapter;
     }

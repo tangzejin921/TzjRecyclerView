@@ -17,6 +17,8 @@ import com.tzj.recyclerview.LayoutManager.ILayoutManager;
 import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
 import com.tzj.recyclerview.LayoutManager.StaggeredGridLayoutManager;
 import com.tzj.recyclerview.adapter.AdapterDelegate;
+import com.tzj.recyclerview.adapter.EmptyAdapter;
+import com.tzj.recyclerview.adapter.NetErrAdapter;
 import com.tzj.recyclerview.adapter.TzjAdapter;
 import com.tzj.recyclerview.entity.DefaultViewType;
 import com.tzj.recyclerview.entity.Empty;
@@ -234,13 +236,11 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         getTzjAdapter().addItem(item);
     }
 
+
+
+
     public Empty getEmpty() {
-        Adapter adapter = getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            return ((AdapterDelegate) adapter).getEmptyAdapter().getEmpty();
-        } else {
-            throw new RuntimeException();
-        }
+        return getEmptyAdapter().getEmpty();
     }
 
     public void setViewType(int r, Class<? extends TzjViewHolder> clzz) {
@@ -268,7 +268,22 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
         }
         throw new RuntimeException("请用 TzjAdapter");
     }
-
+    public EmptyAdapter getEmptyAdapter() {
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate) {
+            return ((AdapterDelegate) adapter).getEmptyAdapter();
+        } else {
+            throw new RuntimeException();
+        }
+    }
+    public NetErrAdapter getNetErrAdapter() {
+        Adapter adapter = getAdapter();
+        if (adapter instanceof AdapterDelegate) {
+            return ((AdapterDelegate) adapter).getNetErrAdapter();
+        } else {
+            throw new RuntimeException();
+        }
+    }
     //========================= SwipeLayout 相关============================
     private SwipeItemMangerImpl2 mItemManger;
 

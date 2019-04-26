@@ -8,6 +8,7 @@
 app/libs/
 app/proguard-rules.pro
 gradle.properties
+.gradle
 gradlew
 gradlew.bat
 library/proguard-rules.pro

@@ -21,7 +21,19 @@ public class LinearLayoutManager extends android.support.v7.widget.LinearLayoutM
 
     @Override
     public Span getSpan(int count, int index) {
-        return new Span(count,index,index/getSpanCount(),index%getSpanCount(),getSpanCount(),getSpanCount(),null);
+        return new Span(count, index, index / getSpanCount(), index % getSpanCount(), getSpanCount(), getSpanCount(), null);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof ILayoutManager) {
+            ILayoutManager manager = (ILayoutManager) obj;
+            return manager.getClass().equals(getClass())
+                    && manager.getOrientation() == getOrientation()
+                    && manager.getSpanCount() == getSpanCount();
+        } else {
+            return super.equals(obj);
+        }
     }
 
 }

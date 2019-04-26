@@ -111,9 +111,11 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
 
     @Override
     public void setLayoutManager(LayoutManager layout) {
-        if (layout instanceof ILayoutManager) {
-            dividerItemDecoration.setLayoutManager((ILayoutManager) layout);
-            super.setLayoutManager(layout);
+        if (layout != null && layout instanceof ILayoutManager) {
+            if (!layout.equals(getLayoutManager())) {
+                dividerItemDecoration.setLayoutManager((ILayoutManager) layout);
+                super.setLayoutManager(layout);
+            }
         } else {
             throw new RuntimeException("请用 ILayoutManager");
         }
@@ -194,7 +196,7 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     //=========================adapter 的方法============================
     public void notifyDataSetChanged() {
         Adapter adapter = getAdapter();
-        if (adapter!=null){
+        if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }
@@ -256,16 +258,17 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     /**
      * 都到真实的 Adapter
      */
-    public TzjAdapter getTzjAdapter(){
+    public TzjAdapter getTzjAdapter() {
         Adapter adapter = getAdapter();
         if (adapter instanceof AdapterDelegate) {
             adapter = ((AdapterDelegate) adapter).getAdapter();
         }
-        if (adapter instanceof TzjAdapter){
+        if (adapter instanceof TzjAdapter) {
             return (TzjAdapter) adapter;
         }
         throw new RuntimeException("请用 TzjAdapter");
     }
+
     //========================= SwipeLayout 相关============================
     private SwipeItemMangerImpl2 mItemManger;
 

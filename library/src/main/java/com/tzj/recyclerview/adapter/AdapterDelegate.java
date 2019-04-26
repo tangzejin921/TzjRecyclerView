@@ -260,7 +260,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
                 boolean temp = connect(context);
                 if (temp != isConnect) {
                     isConnect = temp;
-                    adapter.notifyDataChanged();
+                    adapter.notifyDatasetChanged();
                 }
             }
         }

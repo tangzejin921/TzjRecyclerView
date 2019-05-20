@@ -1,5 +1,6 @@
 package com.tzj.recyclerview.holder;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,5 +30,7 @@ public class EmptyHolder extends TzjViewHolder<Empty>{
         imageView.setImageResource(empty.getImageRes());
         text.setText(empty.getText());
         hint.setText(empty.getHint());
+        text.setVisibility(TextUtils.isEmpty(empty.getText())?View.GONE:View.VISIBLE);
+        hint.setVisibility(TextUtils.isEmpty(empty.getHint())?View.GONE:View.VISIBLE);
     }
 }

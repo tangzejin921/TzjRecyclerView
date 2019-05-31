@@ -55,11 +55,13 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Adapter adapter = detachedAdapter.get();
-        if (adapter != null && getAdapter() == null) {
-            setAdapter(adapter);
+        if (detachedAdapter != null){
+            Adapter adapter = detachedAdapter.get();
+            if (adapter != null && getAdapter() == null) {
+                setAdapter(adapter);
+            }
+            detachedAdapter = null;
         }
-        detachedAdapter = null;
     }
 
     @Override

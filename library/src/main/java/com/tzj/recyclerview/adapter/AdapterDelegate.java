@@ -209,11 +209,13 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
             }
             if (lastAdapter != currentAdapter && lastAdapter instanceof TzjAdapter) {
                 RecyclerView.LayoutManager layoutManager = ((TzjAdapter) currentAdapter).getLayoutManager();
-                RecyclerView recyclerView = mRecyclerView.get();
-                if (recyclerView != null){
-                    recyclerView.setLayoutManager(layoutManager);
-                    if (currentAdapter == adapter) {
-                        currentAdapter.onAttachedToRecyclerView(recyclerView);//为了 GridLayout 的 span 设置
+                if (mRecyclerView != null){
+                    RecyclerView recyclerView = mRecyclerView.get();
+                    if (recyclerView != null){
+                        recyclerView.setLayoutManager(layoutManager);
+                        if (currentAdapter == adapter) {
+                            currentAdapter.onAttachedToRecyclerView(recyclerView);//为了 GridLayout 的 span 设置
+                        }
                     }
                 }
             }

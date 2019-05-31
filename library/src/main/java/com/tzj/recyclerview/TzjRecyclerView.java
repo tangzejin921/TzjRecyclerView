@@ -24,6 +24,7 @@ import com.tzj.recyclerview.entity.DefaultViewType;
 import com.tzj.recyclerview.entity.Empty;
 import com.tzj.recyclerview.holder.TzjViewHolder;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInterface {
@@ -49,13 +50,14 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     /**
      * onDetachedFromWindow 时记录的adapter
      */
-    private Adapter detachedAdapter;
+    private WeakReference<Adapter> detachedAdapter;
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (detachedAdapter != null && getAdapter() == null) {
-            setAdapter(detachedAdapter);
+        Adapter adapter = detachedAdapter.get();
+        if (adapter != null && getAdapter() == null) {
+            setAdapter(adapter);
         }
         detachedAdapter = null;
     }
@@ -63,8 +65,12 @@ public class TzjRecyclerView extends RecyclerView implements SwipeItemMangerInte
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        detachedAdapter = getAdapter();
-        setAdapter(null);//这里让 AdapterDelegate 走 onDetachedFromRecyclerView
+        Adapter adapter = getAdapter();
+        if (adapter != null){
+            detachedAdapter = new WeakReference<>(adapter);
+        }
+        //这里让 AdapterDelegate 走 onDetachedFromRecyclerView
+        setAdapter(null);
     }
 
     //===================================================

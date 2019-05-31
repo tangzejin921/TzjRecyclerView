@@ -14,8 +14,10 @@ import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
 import com.tzj.recyclerview.LayoutManager.ILayoutManager;
 import com.tzj.recyclerview.LayoutManager.LinearLayoutManager;
 
+import java.lang.ref.WeakReference;
+
 public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapterInterface {
-    private RecyclerView mRecyclerView;
+    private WeakReference<RecyclerView> mRecyclerView;
     /**
      * 空类容的 adapter
      */
@@ -166,7 +168,7 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     //TODO 这里因为不同的LayoutManager 会导致 EmptyAdapter、NetErrAdapter、LoadingAdapter 展示有问题
     //TODO 现在这样写导致代码很乱
     private void setmRecyclerView(RecyclerView mRecyclerView) {
-        this.mRecyclerView = mRecyclerView;
+        this.mRecyclerView = new WeakReference<>(mRecyclerView);
 
         RecyclerView.LayoutManager layoutManager = emptyAdapter.getLayoutManager();
         if (layoutManager == null) {
@@ -207,9 +209,12 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
             }
             if (lastAdapter != currentAdapter && lastAdapter instanceof TzjAdapter) {
                 RecyclerView.LayoutManager layoutManager = ((TzjAdapter) currentAdapter).getLayoutManager();
-                mRecyclerView.setLayoutManager(layoutManager);
-                if (currentAdapter == adapter) {
-                    currentAdapter.onAttachedToRecyclerView(mRecyclerView);//为了 GridLayout 的 span 设置
+                RecyclerView recyclerView = mRecyclerView.get();
+                if (recyclerView != null){
+                    recyclerView.setLayoutManager(layoutManager);
+                    if (currentAdapter == adapter) {
+                        currentAdapter.onAttachedToRecyclerView(recyclerView);//为了 GridLayout 的 span 设置
+                    }
                 }
             }
         }

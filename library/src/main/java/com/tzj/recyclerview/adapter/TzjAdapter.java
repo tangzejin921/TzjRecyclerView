@@ -48,6 +48,13 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         public void onMyClick(View v) {
             Integer i = (Integer) v.getTag(R.id.item_index_tag);
             if (i != null && itemClickListener != null) {
+                if (v instanceof SwipeLayout){
+                    SwipeLayout swipeLayout = (SwipeLayout) v;
+                    //关闭才可以点击
+                    if (swipeLayout.getOpenStatus() != SwipeLayout.Status.Close){
+                        return;
+                    }
+                }
                 setSelectId(i);
                 itemClickListener.onItemClick(TzjAdapter.this, v, i, getItem(i));
             }
@@ -65,6 +72,13 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         public boolean onLongClick(View v) {
             Integer i = (Integer) v.getTag(R.id.item_index_tag);
             if (i != null && itemLongClickListener != null) {
+                if (v instanceof SwipeLayout){
+                    SwipeLayout swipeLayout = (SwipeLayout) v;
+                    //关闭才可以点击
+                    if (swipeLayout.getOpenStatus() != SwipeLayout.Status.Close){
+                        return false;
+                    }
+                }
                 itemLongClickListener.onItemLongClick(TzjAdapter.this, v, i, getItem(i));
                 return true;
             }
@@ -233,8 +247,8 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
             SwipeLayout swipeLayout = (SwipeLayout) holder.itemView.findViewById(getSwipeLayoutResourceId(lastItemViewTypePosition));
             holder.setSwipeLayout(swipeLayout);
             if (holder.onClickable()){
-                swipeLayout.getChildAt(1).setOnClickListener(itemListenerRelay);
-                swipeLayout.getChildAt(1).setOnLongClickListener(itemLongListenerRelay);
+                swipeLayout.setOnClickListener(itemListenerRelay);
+                swipeLayout.setOnLongClickListener(itemLongListenerRelay);
             }
         } else {
             if (holder.onClickable()){
@@ -248,8 +262,9 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TzjViewHolder holder, int position) {
         //为了解决 SwipeLayout的不能点击问题
-        if (holder.getSwipeLayout() != null) {
-            holder.getSwipeLayout().getChildAt(1).setTag(R.id.item_index_tag, position);
+        SwipeLayout swipeLayout = holder.getSwipeLayout();
+        if (swipeLayout != null) {
+            swipeLayout.setTag(R.id.item_index_tag, position);
         } else {
             holder.itemView.setTag(R.id.item_index_tag, position);
         }

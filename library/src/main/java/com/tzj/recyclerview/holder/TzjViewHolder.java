@@ -28,7 +28,20 @@ public class TzjViewHolder<D> extends RecyclerView.ViewHolder {
      * view 的点击事件
      */
     public void setListener(View.OnClickListener listener) {
-        this.listener = listener;
+        if (swipeLayout != null){
+            final View.OnClickListener temp = listener;
+            //这个为了关闭 侧滑
+            this.listener = new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    temp.onClick(v);
+                    //关闭侧滑
+                    swipeLayout.close();
+                }
+            };
+        }else{
+            this.listener = listener;
+        }
     }
 
     /**

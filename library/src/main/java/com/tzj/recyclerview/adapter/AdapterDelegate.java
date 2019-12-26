@@ -63,8 +63,8 @@ public class AdapterDelegate extends RecyclerView.Adapter implements SwipeAdapte
     private NetBroadcastReceiver receiver = new NetBroadcastReceiver(this);
 
     public AdapterDelegate() {
-        setHasStableIds(true);
-        adapter.setHasStableIds(true);
+//        setHasStableIds(true);
+//        adapter.setHasStableIds(true);
         /**
          * todo 这里会导致内存泄漏吗？
          * 这里是让 具体的 adapter  可以调用 刷新

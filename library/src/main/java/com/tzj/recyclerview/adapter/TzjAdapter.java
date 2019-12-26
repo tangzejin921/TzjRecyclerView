@@ -29,6 +29,10 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
      */
     private ISwipeViewType viewType;
     /**
+     * view 的点击事件用 Tag 取index吗？
+     */
+    protected boolean tagIndex = true;
+    /**
      * 数据
      */
     private List<Object> mData = new ArrayList();
@@ -108,6 +112,10 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         this.layoutManager = layoutManager;
+    }
+
+    public void setTagIndex(boolean tagIndex) {
+        this.tagIndex = tagIndex;
     }
 
     public IViewType getViewType() {

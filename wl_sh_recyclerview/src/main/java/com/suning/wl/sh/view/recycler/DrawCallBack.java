@@ -1,25 +1,26 @@
-package com.tzj;
+package com.suning.wl.sh.view.recycler;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.helper.ItemTouchClearHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.tzj.recyclerview.R;
-import com.tzj.recyclerview.adapter.AdapterDelegate;
-import com.tzj.recyclerview.adapter.TzjAdapter;
+
+import com.suning.wl.sh.view.R;
+import com.suning.wl.sh.view.recycler.adapter.AdapterDelegate;
+import com.suning.wl.sh.view.recycler.adapter.WLAdapter;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
  * RecyclerView 的交换
+ *  ItemTouchHelper itemTouchClearHelper = new ItemTouchHelper(new DrawCallBack());
+ *  itemTouchClearHelper.attachToRecyclerView(recyclerView);
  */
-public class DrawCallBack extends ItemTouchClearHelper.Callback {
-
+public class DrawCallBack extends ItemTouchHelper.Callback {
     /**
      * 不同类型的View是否可以交换
      */
@@ -62,13 +63,16 @@ public class DrawCallBack extends ItemTouchClearHelper.Callback {
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
         super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
         RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if (adapter instanceof AdapterDelegate) {
-            TzjAdapter tzjAdapter = ((AdapterDelegate) adapter).getAdapter();
+        if (adapter instanceof AdapterDelegate){
+            adapter = ((AdapterDelegate)adapter).getAdapter();
+        }
+        if (adapter instanceof WLAdapter) {
+            WLAdapter wlAdapter = ((WLAdapter) adapter);
             //当发生交换时不能用tag方式取index，要用 getAdapterPosition()
-            tzjAdapter.setTagIndex(false);
-            List list = tzjAdapter.getList();
+            wlAdapter.tagIndex = false;
+            List list = wlAdapter.getList();
             Collections.swap(list, viewHolder.getAdapterPosition(), target.getAdapterPosition());
-            tzjAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+            adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
             //此时的itemView的tag是准确的
             viewHolder.itemView.setTag(R.id.item_index_tag,toPos);
             target.itemView.setTag(R.id.item_index_tag,fromPos);
@@ -93,6 +97,7 @@ public class DrawCallBack extends ItemTouchClearHelper.Callback {
             }
         }
     }
+
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);

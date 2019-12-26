@@ -1,6 +1,6 @@
 include ':app'
 include ':library'
-include ':wl_sh_recyclerview'
+include ':tzj_recyclerview'
 
 //include ':library'
 //project(':library').name = rootProject.name

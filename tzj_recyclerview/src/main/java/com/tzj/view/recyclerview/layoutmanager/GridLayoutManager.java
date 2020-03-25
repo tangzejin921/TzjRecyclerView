@@ -1,24 +1,27 @@
-package com.tzj.view.recyclerview2.recycler.layoutmanager;
+package com.tzj.view.recyclerview.layoutmanager;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.WLSpanSizeLookup;
 import android.util.AttributeSet;
+
+import com.tzj.view.recyclerview.R;
 
 /**
  *
  */
 public class GridLayoutManager extends android.support.v7.widget.GridLayoutManager implements ILayoutManager {
-    private boolean canSpan;
+    private boolean canChangeSpan;
 
     /**
      * @param context
      * @param spanCount
-     * @param canSpan   是否可以设置 SpanSizeLookup,如果span 是一样的请设置为false,减少计算
+     * @param canChangeSpan   是否可以设置 SpanSizeLookup,如果span 是一样的请设置为false,减少计算
      */
-    public GridLayoutManager(Context context, int spanCount, boolean canSpan) {
+    public GridLayoutManager(Context context, int spanCount, boolean canChangeSpan) {
         super(context, spanCount);
-        this.canSpan = canSpan;
+        this.canChangeSpan = canChangeSpan;
     }
 
     public GridLayoutManager(Context context, int spanCount, @RecyclerView.Orientation int orientation, boolean reverseLayout) {
@@ -27,11 +30,19 @@ public class GridLayoutManager extends android.support.v7.widget.GridLayoutManag
 
     public GridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        canChangeSpan = getCanSpan(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    private boolean getCanSpan(Context context, AttributeSet attrs,int defStyleAttr, int defStyleRes) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RecyclerView,defStyleAttr, defStyleRes);
+        boolean b = a.getBoolean(R.styleable.RecyclerView_canChangeSpan, false);
+        a.recycle();
+        return b;
     }
 
     @Override
     public void setSpanSizeLookup(SpanSizeLookup spanSizeLookup) {
-        if (canSpan) {
+        if (canChangeSpan) {
             super.setSpanSizeLookup(spanSizeLookup);
         }
     }

@@ -1,4 +1,4 @@
-package com.tzj.view.recyclerview2.recycler.adapter;
+package com.tzj.view.recyclerview.adapter;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,59 +10,63 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.tzj.view.recyclerview2.recycler.IViewType;
-import com.tzj.view.recyclerview2.recycler.holder.WLViewHolder;
-import com.tzj.view.recyclerview2.recycler.layoutmanager.LinearLayoutManager;
+import com.tzj.view.listener.NoDoubleOnClickListener;
+import com.tzj.view.recyclerview.DefaultViewType;
+import com.tzj.view.recyclerview.IViewType;
+import com.tzj.view.recyclerview.holder.WLViewHolder;
+import com.tzj.view.recyclerview.layoutmanager.LinearLayoutManager;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 public class AdapterDelegate extends RecyclerView.Adapter {
-    public interface ICreateViewType{
+    public interface ICreateViewType {
         IViewType createEmpty();
+
         IViewType createNetErr();
+
         IViewType createLoading();
     }
 
     public static ICreateViewType iCreateAdapter = new ICreateViewType() {
-        private IViewType viewType = new IViewType() {
-            @Override
-            public int type() {
-                return R.layout.view_view_type;
-            }
-            @Override
-            public Class<? extends WLViewHolder> holder() {
-                return WLViewHolder.class;
-            }
-        };
         @Override
         public IViewType createEmpty() {
-            return viewType;
+            return new DefaultViewType();
         }
 
         @Override
         public IViewType createNetErr() {
-            return viewType;
+            return new DefaultViewType();
         }
 
         @Override
         public IViewType createLoading() {
-            return viewType;
+            return new DefaultViewType();
         }
     };
-
     private WeakReference<RecyclerView> mRecyclerView;
     /**
      * 空类容的 adapter
      */
     private WLAdapter emptyAdapter = new WLAdapter().addItem(iCreateAdapter.createEmpty());
+    public void setEmptyAdapter(WLAdapter emptyAdapter) {
+        this.emptyAdapter = emptyAdapter;
+    }
     /**
      * 网络异常的 adapter
      */
     private WLAdapter netErrAdapter = new WLAdapter().addItem(iCreateAdapter.createNetErr());
+    public void setNetErrAdapter(WLAdapter netErrAdapter) {
+        this.netErrAdapter = netErrAdapter;
+    }
     /**
      * 加载中的 adapter
      */
     private WLAdapter loadingAdapter = new WLAdapter().addItem(iCreateAdapter.createLoading());
+    public void setLoadingAdapter(WLAdapter loadingAdapter) {
+        this.loadingAdapter = loadingAdapter;
+        currentAdapter = loadingAdapter;
+    }
     /**
      * 真实数据的 adapter
      */
@@ -227,12 +231,16 @@ public class AdapterDelegate extends RecyclerView.Adapter {
             loadingAdapter.setLayoutManager(null);
             adapter.setLayoutManager(null);
         } else {
-            this.mRecyclerView = new WeakReference<>(recyclerView);
+            //有几个adapter设置为线性布局
             RecyclerView.LayoutManager temp = new LinearLayoutManager(recyclerView.getContext());
             emptyAdapter.setLayoutManager(temp);
             netErrAdapter.setLayoutManager(temp);
             loadingAdapter.setLayoutManager(temp);
-            adapter.setLayoutManager(recyclerView.getLayoutManager());
+            if (recyclerView.getLayoutManager() != null && this.mRecyclerView == null) {//xml里设置了layoutManager
+                adapter.setLayoutManager(recyclerView.getLayoutManager());
+            }
+            recyclerView.setLayoutManager(temp);
+            this.mRecyclerView = new WeakReference<>(recyclerView);
         }
     }
 
@@ -257,7 +265,7 @@ public class AdapterDelegate extends RecyclerView.Adapter {
                 if (mRecyclerView != null) {
                     RecyclerView recyclerView = mRecyclerView.get();
                     if (recyclerView != null) {
-                        if (layoutManager != null){
+                        if (layoutManager != null) {
                             recyclerView.setLayoutManager(layoutManager);
                         }
                         if (currentAdapter == adapter) {
@@ -333,5 +341,71 @@ public class AdapterDelegate extends RecyclerView.Adapter {
     public void notifyDatasetChanged() {
         notifyDatasetChanged = true;
         super.notifyDataSetChanged();
+    }
+
+    //=================================================
+    public void setViewType(IViewType viewType) {
+        adapter.setViewType(viewType);
+    }
+
+    public void setViewType(final int resource, final Class<? extends WLViewHolder> holder) {
+        adapter.setViewType(resource, holder);
+    }
+
+    /**
+     * 只让设置一次
+     */
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        adapter.setLayoutManager(layoutManager);
+    }
+
+    public <T> T getItem(int position) {
+        return (T) adapter.getItem(position);
+    }
+
+    public List<?> getList() {
+        return adapter.getList();
+    }
+
+    public void setList(List<?> list) {
+        adapter.setList(list);
+    }
+
+    public void addList(List list) {
+        adapter.addList(list);
+    }
+
+    public AdapterDelegate addItem(Object item) {
+        adapter.addItem(item);
+        return this;
+    }
+
+    public void setSelectId(int index) {
+        adapter.setSelectId(index);
+    }
+
+    public int getSelectId() {
+        return adapter.getSelectId();
+    }
+
+    /**
+     * item 点击事件
+     */
+    public void setOnItemClickListener(NoDoubleOnClickListener itemClickListener) {
+        adapter.setOnItemClickListener(itemClickListener);
+    }
+
+    /**
+     * item 长按事件
+     */
+    public void setOnItemLongClickListener(NoDoubleOnClickListener itemLongClickListener) {
+        adapter.setOnItemLongClickListener(itemLongClickListener);
+    }
+
+    /**
+     * 点了具体的 view
+     */
+    public void setOnClickListener(NoDoubleOnClickListener clickListener) {
+        adapter.setOnClickListener(clickListener);
     }
 }

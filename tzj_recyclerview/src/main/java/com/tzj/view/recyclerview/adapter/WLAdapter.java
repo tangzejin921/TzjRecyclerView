@@ -1,4 +1,4 @@
-package com.tzj.view.recyclerview2.recycler.adapter;
+package com.tzj.view.recyclerview.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.tzj.view.recyclerview2.R;
-import com.tzj.view.recyclerview2.recycler.IViewType;
-import com.tzj.view.recyclerview2.NoDoubleOnClickListener;
-import com.tzj.view.recyclerview2.recycler.holder.WLViewHolder;
+import com.tzj.view.listener.NoDoubleOnClickListener;
+import com.tzj.view.recyclerview.IViewType;
+import com.tzj.view.recyclerview.R;
+import com.tzj.view.recyclerview.holder.WLViewHolder;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -71,7 +71,8 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
     }
 
     /**
-     * 只让设置一次
+     * 只让设置一次,
+     * 如果想要改变请先设置null再设置
      */
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         if (this.layoutManager == null || layoutManager == null){
@@ -212,8 +213,12 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
                 @Override
                 public int getSpanSize(int position) {
                     IViewType item = getItem(position);
-                    if (item instanceof com.tzj.view.recyclerview2.recycler.layoutmanager.GridLayoutManager.SpanSize) {
-                        return ((com.tzj.view.recyclerview2.recycler.layoutmanager.GridLayoutManager.SpanSize) item).getSpanSize();
+                    if (item instanceof com.tzj.view.recyclerview.layoutmanager.GridLayoutManager.SpanSize) {
+                        int temp = ((com.tzj.view.recyclerview.layoutmanager.GridLayoutManager.SpanSize) item).getSpanSize();
+                        if (temp < 1){
+                            temp = gridManager.getSpanCount();
+                        }
+                        return temp;
                     } else {
                         return 1;
                     }

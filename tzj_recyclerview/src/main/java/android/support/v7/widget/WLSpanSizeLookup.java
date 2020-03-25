@@ -2,7 +2,7 @@ package android.support.v7.widget;
 
 import android.graphics.Point;
 
-import com.tzj.view.recyclerview2.recycler.layoutmanager.Span;
+import com.tzj.view.recyclerview.layoutmanager.Span;
 
 
 /**

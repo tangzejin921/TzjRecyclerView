@@ -1,12 +1,12 @@
-package com.tzj.view.recyclerview2.recycler.holder;
+package com.tzj.view.recyclerview.holder;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.view.View;
 
-import com.tzj.view.recyclerview2.R;
-import com.tzj.view.recyclerview2.recycler.adapter.WLAdapter;
+import com.tzj.view.recyclerview.R;
+import com.tzj.view.recyclerview.adapter.WLAdapter;
 
 import java.lang.reflect.Field;
 
@@ -89,7 +89,7 @@ public class WLViewHolder<D> extends BaseViewHolder {
             Field field = brClazz.getField(name);
             return field.getInt(brClazz);
         } catch (Exception e) {
-            return com.tzj.view.recyclerview2.BR._all;
+            return com.tzj.view.recyclerview.BR._all;
         }
     }
 

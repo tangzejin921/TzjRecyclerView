@@ -1,6 +1,6 @@
-package com.tzj.view.recyclerview2.recycler;
+package com.tzj.view.recyclerview;
 
-import com.tzj.view.recyclerview2.recycler.holder.WLViewHolder;
+import com.tzj.view.recyclerview.holder.WLViewHolder;
 
 public interface IViewType {
     /**

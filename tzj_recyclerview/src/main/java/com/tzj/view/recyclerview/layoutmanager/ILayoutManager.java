@@ -1,4 +1,4 @@
-package com.tzj.view.recyclerview2.recycler.layoutmanager;
+package com.tzj.view.recyclerview.layoutmanager;
 
 /**
  *

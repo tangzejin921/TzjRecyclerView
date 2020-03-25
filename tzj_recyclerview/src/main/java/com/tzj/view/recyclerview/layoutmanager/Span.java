@@ -1,4 +1,4 @@
-package com.tzj.view.recyclerview2.recycler.layoutmanager;
+package com.tzj.view.recyclerview.layoutmanager;
 
 public class Span {
     private int count;//总个数

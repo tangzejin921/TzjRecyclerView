@@ -1,6 +1,8 @@
-package com.tzj.view.recyclerview2;
+package com.tzj.view.listener;
 
 import android.view.View;
+
+import com.tzj.view.recyclerview.R;
 
 
 /**
@@ -33,5 +35,10 @@ public abstract class NoDoubleOnClickListener implements View.OnClickListener,Vi
         }
     }
 
+    /**
+     *
+     * @param v
+     * @param index v.getTag(R.id.item_index_tag)
+     */
     public abstract void onMyClick(View v, int index);
 }

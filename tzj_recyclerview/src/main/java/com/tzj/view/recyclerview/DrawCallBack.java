@@ -1,4 +1,4 @@
-package com.tzj.view.recyclerview2.recycler;
+package com.tzj.view.recyclerview;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,9 +8,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 
-import com.tzj.view.recyclerview2.R;
-import com.tzj.view.recyclerview2.recycler.adapter.AdapterDelegate;
-import com.tzj.view.recyclerview2.recycler.adapter.WLAdapter;
+import com.tzj.view.recyclerview.adapter.AdapterDelegate;
+import com.tzj.view.recyclerview.adapter.WLAdapter;
 
 import java.util.Collections;
 import java.util.List;

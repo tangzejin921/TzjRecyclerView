@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tzj.view.recyclerview2.recycler.holder;
+package com.tzj.view.recyclerview.holder;
 
 import android.graphics.Bitmap;
 import android.graphics.Paint;

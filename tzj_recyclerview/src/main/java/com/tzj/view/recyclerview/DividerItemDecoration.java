@@ -1,4 +1,4 @@
-package com.tzj.view.recyclerview2.recycler;
+package com.tzj.view.recyclerview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,8 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.tzj.view.recyclerview2.recycler.layoutmanager.ILayoutManager;
-import com.tzj.view.recyclerview2.recycler.layoutmanager.Span;
+import com.tzj.view.recyclerview.layoutmanager.ILayoutManager;
+import com.tzj.view.recyclerview.layoutmanager.Span;
 
 
 /**

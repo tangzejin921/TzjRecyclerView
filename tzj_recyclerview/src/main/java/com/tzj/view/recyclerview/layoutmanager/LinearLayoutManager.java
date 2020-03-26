@@ -1,23 +1,34 @@
 package com.tzj.view.recyclerview.layoutmanager;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+
+import com.tzj.view.recyclerview.DividerItemDecoration;
+import com.tzj.view.recyclerview.R;
 
 /**
  *
  */
 public class LinearLayoutManager extends android.support.v7.widget.LinearLayoutManager implements ILayoutManager {
+    private DividerItemDecoration divider = new DividerItemDecoration();
     public LinearLayoutManager(Context context) {
         super(context);
+        divider.setLayoutManager(this);
     }
 
     public LinearLayoutManager(Context context, @RecyclerView.Orientation int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
+        divider.setLayoutManager(this);
     }
 
     public LinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        divider.setLayoutManager(this);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RecyclerView,defStyleAttr, defStyleRes);
+        divider.setXml(a);
+        a.recycle();
     }
 
     @Override
@@ -32,6 +43,11 @@ public class LinearLayoutManager extends android.support.v7.widget.LinearLayoutM
     @Override
     public Span getSpan(int count, int index) {
         return new Span(count, index, index / getSpanCount(), index % getSpanCount(), getSpanCount(), getSpanCount(), null);
+    }
+
+    @Override
+    public DividerItemDecoration getDivider() {
+        return divider;
     }
 
     @Override

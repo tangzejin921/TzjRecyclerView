@@ -1,5 +1,7 @@
 package com.tzj.view.recyclerview.layoutmanager;
 
+import com.tzj.view.recyclerview.DividerItemDecoration;
+
 /**
  *
  */
@@ -28,4 +30,6 @@ public interface ILayoutManager {
      * 设置一行几个
      */
     Span getSpan(int count, int index);
+
+    DividerItemDecoration getDivider();
 }

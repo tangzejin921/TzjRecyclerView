@@ -1,12 +1,11 @@
 package com.tzj.view.recyclerview;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -18,30 +17,46 @@ import com.tzj.view.recyclerview.layoutmanager.Span;
  * 间隔
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
-    private final int[] ATTRS = new int[]{android.R.attr.listDivider};
-    private Drawable mDivider;
     private ILayoutManager layoutManager = null;
+    private int mDividerHeight = 0;
+    private ColorDrawable mDivider = new ColorDrawable(android.R.color.transparent) {
+
+        @Override
+        public int getIntrinsicHeight() {
+            return mDividerHeight;
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return getIntrinsicHeight();
+        }
+    };
     private boolean leftRight;
     private boolean topBottom = true;
 
-    public DividerItemDecoration(Context ctx, int orientation) {
-        TypedArray a = ctx.obtainStyledAttributes(ATTRS);
-        mDivider = a.getDrawable(0);
-        a.recycle();
+    public DividerItemDecoration() {
     }
 
-    protected void setDrawable(@NonNull Drawable drawable) {
-        if (drawable == null) {
-            throw new IllegalArgumentException("Drawable cannot be null.");
-        }
-        mDivider = drawable;
+    /**
+     * 获取xml数据
+     */
+    public void setXml(TypedArray a){
+        mDividerHeight = (int) a.getDimension(R.styleable.RecyclerView_android_dividerHeight,0);
+        leftRight = a.getBoolean(R.styleable.RecyclerView_paddingLeftRight,false);
+        topBottom = a.getBoolean(R.styleable.RecyclerView_paddingTopBottom,true);
+        mDivider.setColor(a.getColor(R.styleable.RecyclerView_android_listDivider,0x00000000));
+    }
+
+    public DividerItemDecoration setColor(@ColorInt int color) {
+        mDivider.setColor(color);
+        return this;
     }
 
     public Drawable getDrawable() {
         return mDivider;
     }
 
-    protected void setLayoutManager(ILayoutManager layoutManager) {
+    public void setLayoutManager(ILayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
 
@@ -53,6 +68,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public DividerItemDecoration setDivider(boolean leftRight, boolean topBottom) {
         this.leftRight = leftRight;
         this.topBottom = topBottom;
+        return this;
+    }
+
+    public DividerItemDecoration setmDividerHeight(int mDividerHeight) {
+        this.mDividerHeight = mDividerHeight;
         return this;
     }
 
@@ -131,41 +151,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         outRect.set(left, top, right, bottom);
     }
 
-
-
-    /**
-     *
-     */
-    public DividerItemDecoration setDivider(RecyclerView view,float px) {
-        return setDivider(view,px, android.R.color.transparent);
-    }
-
-    public DividerItemDecoration setDivider(RecyclerView view,final float px, int color) {
-        view.removeItemDecoration(this);
-        ColorDrawable colorDrawable = new ColorDrawable(color) {
-            private int h = (int) px;
-
-            @Override
-            public int getIntrinsicHeight() {
-                return h;
-            }
-
-            @Override
-            public int getIntrinsicWidth() {
-                return getIntrinsicHeight();
-            }
-        };
-        setDrawable(colorDrawable);
-        view.addItemDecoration(this);
-        view.setBackgroundColor(color);
-        return this;
-    }
-
     public void divider(RecyclerView view) {
-        RecyclerView.LayoutManager layoutManager = view.getLayoutManager();
-        if (layoutManager instanceof ILayoutManager){
-            setLayoutManager((ILayoutManager)layoutManager);
-        }
+        view.removeItemDecoration(this);
+        view.addItemDecoration(this);
+        view.setBackgroundColor(mDivider.getColor());
         Drawable drawable = getDrawable();
         int intrinsicHeight = drawable.getIntrinsicHeight();
         int l = view.getPaddingLeft();

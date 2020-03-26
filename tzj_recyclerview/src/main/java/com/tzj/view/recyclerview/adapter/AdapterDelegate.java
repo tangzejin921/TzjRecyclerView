@@ -14,6 +14,7 @@ import com.tzj.view.listener.NoDoubleOnClickListener;
 import com.tzj.view.recyclerview.DefaultViewType;
 import com.tzj.view.recyclerview.IViewType;
 import com.tzj.view.recyclerview.holder.WLViewHolder;
+import com.tzj.view.recyclerview.layoutmanager.ILayoutManager;
 import com.tzj.view.recyclerview.layoutmanager.LinearLayoutManager;
 
 import java.lang.ref.WeakReference;
@@ -236,8 +237,16 @@ public class AdapterDelegate extends RecyclerView.Adapter {
             emptyAdapter.setLayoutManager(temp);
             netErrAdapter.setLayoutManager(temp);
             loadingAdapter.setLayoutManager(temp);
-            if (recyclerView.getLayoutManager() != null && this.mRecyclerView == null) {//xml里设置了layoutManager
-                adapter.setLayoutManager(recyclerView.getLayoutManager());
+            if (recyclerView.getLayoutManager() != null) {//xml里设置了layoutManager
+                if (this.mRecyclerView == null) {
+                    RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                    //这里设置会影响到加载中界面
+//                    if (layoutManager instanceof ILayoutManager){
+//                        ((ILayoutManager) layoutManager).getDivider().divider(recyclerView);
+//                    }
+                    setLayoutManager(layoutManager);
+                }
+            } else {
             }
             recyclerView.setLayoutManager(temp);
             this.mRecyclerView = new WeakReference<>(recyclerView);
@@ -265,6 +274,10 @@ public class AdapterDelegate extends RecyclerView.Adapter {
                 if (mRecyclerView != null) {
                     RecyclerView recyclerView = mRecyclerView.get();
                     if (recyclerView != null) {
+                        //设置divider
+                        if(layoutManager != null && layoutManager instanceof ILayoutManager){
+                            ((ILayoutManager) layoutManager).getDivider().divider(recyclerView);
+                        }
                         if (layoutManager != null) {
                             recyclerView.setLayoutManager(layoutManager);
                         }

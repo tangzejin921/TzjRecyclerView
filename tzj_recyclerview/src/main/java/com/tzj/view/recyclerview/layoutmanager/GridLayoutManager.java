@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.WLSpanSizeLookup;
 import android.util.AttributeSet;
 
+import com.tzj.view.recyclerview.DividerItemDecoration;
 import com.tzj.view.recyclerview.R;
 
 /**
@@ -13,7 +14,7 @@ import com.tzj.view.recyclerview.R;
  */
 public class GridLayoutManager extends android.support.v7.widget.GridLayoutManager implements ILayoutManager {
     private boolean canChangeSpan;
-
+    private DividerItemDecoration divider = new DividerItemDecoration();
     /**
      * @param context
      * @param spanCount
@@ -21,23 +22,22 @@ public class GridLayoutManager extends android.support.v7.widget.GridLayoutManag
      */
     public GridLayoutManager(Context context, int spanCount, boolean canChangeSpan) {
         super(context, spanCount);
+        divider.setLayoutManager(this);
         this.canChangeSpan = canChangeSpan;
     }
 
     public GridLayoutManager(Context context, int spanCount, @RecyclerView.Orientation int orientation, boolean reverseLayout) {
         super(context, spanCount, orientation, reverseLayout);
+        divider.setLayoutManager(this);
     }
 
     public GridLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        canChangeSpan = getCanSpan(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    private boolean getCanSpan(Context context, AttributeSet attrs,int defStyleAttr, int defStyleRes) {
+        divider.setLayoutManager(this);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RecyclerView,defStyleAttr, defStyleRes);
-        boolean b = a.getBoolean(R.styleable.RecyclerView_canChangeSpan, false);
+        divider.setXml(a);
+        canChangeSpan = a.getBoolean(R.styleable.RecyclerView_canChangeSpan, false);
         a.recycle();
-        return b;
     }
 
     @Override
@@ -59,6 +59,11 @@ public class GridLayoutManager extends android.support.v7.widget.GridLayoutManag
             int spanSize = spanSizeLookup.getSpanSize(index);//占几个
             return new Span(count, index, spanGroupIndex, spanIndex, getSpanCount(), spanSize, null);
         }
+    }
+
+    @Override
+    public DividerItemDecoration getDivider() {
+        return divider;
     }
 
     public interface SpanSize {

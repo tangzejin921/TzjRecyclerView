@@ -1,5 +1,6 @@
 package com.tzj.listener;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 
@@ -31,7 +32,7 @@ public abstract class NoDoubleOnClickListener implements View.OnClickListener{
      * @return 不可以点击
      */
     public static synchronized boolean notAble(long delay){
-        long l = System.currentTimeMillis();
+        long l = SystemClock.elapsedRealtime();
         if (lastClickTime > l){
             //防止时间的改变导致长时间不能点击
             lastClickTime = l - delay;
@@ -48,6 +49,6 @@ public abstract class NoDoubleOnClickListener implements View.OnClickListener{
      * @param time　未来多长时间不可以点击
      */
     public static void setNotAble(int time){
-        lastClickTime = System.currentTimeMillis()+time;
+        lastClickTime = SystemClock.elapsedRealtime()+time;
     }
 }

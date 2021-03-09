@@ -3,7 +3,7 @@ package com.tzj.view.recyclerview.layoutmanager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.WLSpanSizeLookup;
+import android.support.v7.widget.TzjSpanSizeLookup;
 import android.util.AttributeSet;
 
 import com.tzj.view.recyclerview.DividerItemDecoration;
@@ -50,8 +50,8 @@ public class GridLayoutManager extends android.support.v7.widget.GridLayoutManag
     @Override
     public Span getSpan(int count, int index) {
         SpanSizeLookup spanSizeLookup = getSpanSizeLookup();
-        if (spanSizeLookup instanceof WLSpanSizeLookup) {
-            return ((WLSpanSizeLookup) spanSizeLookup).getSpan(count, index, getSpanCount());
+        if (spanSizeLookup instanceof TzjSpanSizeLookup) {
+            return ((TzjSpanSizeLookup) spanSizeLookup).getSpan(count, index, getSpanCount());
         } else {
             int spanCount = getSpanCount();//
             int spanGroupIndex = spanSizeLookup.getSpanGroupIndex(index, spanCount);//第几行

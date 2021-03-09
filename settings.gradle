@@ -1,7 +1,7 @@
 include ':app'
 include ':library'
 //include ':simple'
-include ':tzj_recyclerview'
+include ':simple'
 
 //include ':library'
 //project(':library').name = rootProject.name

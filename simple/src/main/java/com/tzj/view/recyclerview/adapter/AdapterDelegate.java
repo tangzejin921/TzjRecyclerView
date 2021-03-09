@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.tzj.view.listener.NoDoubleOnClickListener;
 import com.tzj.view.recyclerview.DefaultViewType;
 import com.tzj.view.recyclerview.IViewType;
-import com.tzj.view.recyclerview.holder.WLViewHolder;
+import com.tzj.view.recyclerview.holder.TzjViewHolder;
 import com.tzj.view.recyclerview.layoutmanager.ILayoutManager;
 import com.tzj.view.recyclerview.layoutmanager.LinearLayoutManager;
 
@@ -49,29 +49,29 @@ public class AdapterDelegate extends RecyclerView.Adapter {
     /**
      * 空类容的 adapter
      */
-    private WLAdapter emptyAdapter = new WLAdapter().addItem(iCreateAdapter.createEmpty());
-    public void setEmptyAdapter(WLAdapter emptyAdapter) {
+    private TzjAdapter emptyAdapter = new TzjAdapter().addItem(iCreateAdapter.createEmpty());
+    public void setEmptyAdapter(TzjAdapter emptyAdapter) {
         this.emptyAdapter = emptyAdapter;
     }
     /**
      * 网络异常的 adapter
      */
-    private WLAdapter netErrAdapter = new WLAdapter().addItem(iCreateAdapter.createNetErr());
-    public void setNetErrAdapter(WLAdapter netErrAdapter) {
+    private TzjAdapter netErrAdapter = new TzjAdapter().addItem(iCreateAdapter.createNetErr());
+    public void setNetErrAdapter(TzjAdapter netErrAdapter) {
         this.netErrAdapter = netErrAdapter;
     }
     /**
      * 加载中的 adapter
      */
-    private WLAdapter loadingAdapter = new WLAdapter().addItem(iCreateAdapter.createLoading());
-    public void setLoadingAdapter(WLAdapter loadingAdapter) {
+    private TzjAdapter loadingAdapter = new TzjAdapter().addItem(iCreateAdapter.createLoading());
+    public void setLoadingAdapter(TzjAdapter loadingAdapter) {
         this.loadingAdapter = loadingAdapter;
         currentAdapter = loadingAdapter;
     }
     /**
      * 真实数据的 adapter
      */
-    private WLAdapter adapter = new WLAdapter();
+    private TzjAdapter adapter = new TzjAdapter();
     /**
      * 当前的 Adapter
      */
@@ -146,7 +146,7 @@ public class AdapterDelegate extends RecyclerView.Adapter {
         adapter.registerAdapterDataObserver(adapterObserver);
     }
 
-    public WLAdapter getAdapter() {
+    public TzjAdapter getAdapter() {
         return adapter;
     }
 
@@ -269,8 +269,8 @@ public class AdapterDelegate extends RecyclerView.Adapter {
             } else {
                 currentAdapter = netErrAdapter;
             }
-            if (lastAdapter != currentAdapter && lastAdapter instanceof WLAdapter) {
-                RecyclerView.LayoutManager layoutManager = ((WLAdapter) currentAdapter).getLayoutManager();
+            if (lastAdapter != currentAdapter && lastAdapter instanceof TzjAdapter) {
+                RecyclerView.LayoutManager layoutManager = ((TzjAdapter) currentAdapter).getLayoutManager();
                 if (mRecyclerView != null) {
                     RecyclerView recyclerView = mRecyclerView.get();
                     if (recyclerView != null) {
@@ -361,7 +361,7 @@ public class AdapterDelegate extends RecyclerView.Adapter {
         adapter.setViewType(viewType);
     }
 
-    public void setViewType(final int resource, final Class<? extends WLViewHolder> holder) {
+    public void setViewType(final int resource, final Class<? extends TzjViewHolder> holder) {
         adapter.setViewType(resource, holder);
     }
 

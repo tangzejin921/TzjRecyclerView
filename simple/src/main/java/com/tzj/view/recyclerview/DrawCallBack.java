@@ -9,7 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 
 import com.tzj.view.recyclerview.adapter.AdapterDelegate;
-import com.tzj.view.recyclerview.adapter.WLAdapter;
+import com.tzj.view.recyclerview.adapter.TzjAdapter;
 
 import java.util.Collections;
 import java.util.List;
@@ -65,8 +65,8 @@ public class DrawCallBack extends ItemTouchHelper.Callback {
         if (adapter instanceof AdapterDelegate){
             adapter = ((AdapterDelegate)adapter).getAdapter();
         }
-        if (adapter instanceof WLAdapter) {
-            WLAdapter wlAdapter = ((WLAdapter) adapter);
+        if (adapter instanceof TzjAdapter) {
+            TzjAdapter wlAdapter = ((TzjAdapter) adapter);
             //当发生交换时不能用tag方式取index，要用 getAdapterPosition()
             wlAdapter.tagIndex = false;
             List list = wlAdapter.getList();

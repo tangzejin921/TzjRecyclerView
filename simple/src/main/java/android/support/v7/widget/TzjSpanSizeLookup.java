@@ -8,7 +8,7 @@ import com.tzj.view.recyclerview.layoutmanager.Span;
 /**
  *
  */
-public class WLSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
+public class TzjSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
     @Override
     public int getSpanSize(int position) {
         return 1;

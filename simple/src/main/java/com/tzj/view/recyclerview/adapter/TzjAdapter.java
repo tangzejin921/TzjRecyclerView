@@ -3,7 +3,7 @@ package com.tzj.view.recyclerview.adapter;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.WLSpanSizeLookup;
+import android.support.v7.widget.TzjSpanSizeLookup;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +12,14 @@ import android.view.ViewGroup;
 import com.tzj.view.listener.NoDoubleOnClickListener;
 import com.tzj.view.recyclerview.IViewType;
 import com.tzj.view.recyclerview.R;
-import com.tzj.view.recyclerview.holder.WLViewHolder;
+import com.tzj.view.recyclerview.holder.TzjViewHolder;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
+public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     /**
      * 记录暂存用
      */
@@ -36,10 +36,10 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
      */
     private int selectId = -1;
 
-    public WLAdapter() {
+    public TzjAdapter() {
     }
 
-    public WLAdapter(List data) {
+    public TzjAdapter(List data) {
         mData = data;
     }
 
@@ -53,7 +53,7 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
         this.viewType = viewType;
     }
 
-    public void setViewType(final int resource, final Class<? extends WLViewHolder> holder) {
+    public void setViewType(final int resource, final Class<? extends TzjViewHolder> holder) {
         this.viewType = new IViewType() {
             @Override
             public int type() {
@@ -61,7 +61,7 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
             }
 
             @Override
-            public Class<? extends WLViewHolder> holder() {
+            public Class<? extends TzjViewHolder> holder() {
                 return holder;
             }
         };
@@ -96,7 +96,7 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
         this.mData.addAll(list);
     }
 
-    public WLAdapter addItem(Object item) {
+    public TzjAdapter addItem(Object item) {
         this.mData.add(item);
         return this;
     }
@@ -132,7 +132,7 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
         }
     }
 
-    public Class<? extends WLViewHolder> getHolder(int index) {
+    public Class<? extends TzjViewHolder> getHolder(int index) {
         if (viewType != null) {
             return viewType.holder();
         } else {
@@ -152,12 +152,12 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
 
     @NonNull
     @Override
-    public WLViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        WLViewHolder holder = null;
+    public TzjViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        TzjViewHolder holder = null;
         View inflate = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
-        Class<? extends WLViewHolder> holer = getHolder(lastItemViewTypePosition);
+        Class<? extends TzjViewHolder> holer = getHolder(lastItemViewTypePosition);
         try {
-            Constructor<? extends WLViewHolder> constructor = holer.getConstructor(View.class);
+            Constructor<? extends TzjViewHolder> constructor = holer.getConstructor(View.class);
             holder = constructor.newInstance(inflate);
             holder.onCreateView(parent.getContext(), this, holder.itemView);
             holder.setListener(new HolderOnClick(holder) {
@@ -169,6 +169,10 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
                         }
                         clickListener.onMyClick(v, index);
                     }
+                }
+
+                @Override
+                public void onMyClick(View view) {
                 }
             });
         } catch (Exception e) {
@@ -183,6 +187,10 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
                         itemClickListener.onMyClick(v, index);
                     }
                 }
+
+                @Override
+                public void onMyClick(View view) {
+                }
             });
             holder.itemView.setOnLongClickListener(new HolderOnClick(holder) {
                 @Override
@@ -192,13 +200,17 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
                         itemLongClickListener.onMyClick(v, index);
                     }
                 }
+
+                @Override
+                public void onMyClick(View view) {
+                }
             });
         }
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WLViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TzjViewHolder holder, int position) {
         holder.itemView.setTag(R.id.item_index_tag, position);
         holder.onBind(this, getItem(position), position);
     }
@@ -209,7 +221,7 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
             final GridLayoutManager gridManager = ((GridLayoutManager) manager);
-            gridManager.setSpanSizeLookup(new WLSpanSizeLookup() {
+            gridManager.setSpanSizeLookup(new TzjSpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
                     IViewType item = getItem(position);
@@ -264,9 +276,9 @@ public class WLAdapter extends RecyclerView.Adapter<WLViewHolder> {
 
 
     private abstract static class HolderOnClick extends NoDoubleOnClickListener {
-        protected WLViewHolder holder;
+        protected TzjViewHolder holder;
 
-        public HolderOnClick(WLViewHolder holder) {
+        public HolderOnClick(TzjViewHolder holder) {
             this.holder = holder;
         }
     }

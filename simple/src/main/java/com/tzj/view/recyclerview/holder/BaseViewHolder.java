@@ -601,12 +601,12 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    /**
-     * Sets the adapter of a adapter view.
-     *
-     * @param adapter The adapter;
-     * @return The BaseViewHolder for chaining.
-     */
+//    /**
+//     * Sets the adapter of a adapter view.
+//     *
+//     * @param adapter The adapter;
+//     * @return The BaseViewHolder for chaining.
+//     */
 //    protected BaseViewHolder setAdapter(BaseQuickAdapter adapter) {
 //        this.adapter = adapter;
 //        return this;

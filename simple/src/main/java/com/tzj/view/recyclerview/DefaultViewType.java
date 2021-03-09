@@ -1,6 +1,6 @@
 package com.tzj.view.recyclerview;
 
-import com.tzj.view.recyclerview.holder.WLViewHolder;
+import com.tzj.view.recyclerview.holder.TzjViewHolder;
 import com.tzj.view.recyclerview.layoutmanager.GridLayoutManager;
 
 /**
@@ -13,8 +13,8 @@ public class DefaultViewType implements IViewType, GridLayoutManager.SpanSize {
     }
 
     @Override
-    public Class<? extends WLViewHolder> holder() {
-        return WLViewHolder.class;
+    public Class<? extends TzjViewHolder> holder() {
+        return TzjViewHolder.class;
     }
 
     @Override

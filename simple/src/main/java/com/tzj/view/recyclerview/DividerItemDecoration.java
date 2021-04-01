@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -233,15 +234,18 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                     right = 0;
                 }
             } else {
-                // TODO: 当 横向 GridLayoutManager 时并且无 topBottom时界面有问题
                 if (isFirstH && !leftRight) {
                     left = 0;
                 }
-                if (isFirstL && !topBottom) {
-                    top = 0;
-                }
-                if (isLastL && !topBottom) {
-                    bottom = 0;
+                if (!topBottom && layoutManager instanceof GridLayoutManager){
+                    // TODO: 当 横向 GridLayoutManager 时并且无 topBottom时界面有问题
+                } else {
+                    if (isFirstL && !topBottom) {
+                        top = 0;
+                    }
+                    if (isLastL && !topBottom) {
+                        bottom = 0;
+                    }
                 }
                 if (isLastH && !leftRight) {
                     right = 0;

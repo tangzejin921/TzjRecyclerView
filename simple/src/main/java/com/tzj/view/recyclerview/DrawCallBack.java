@@ -8,7 +8,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 
-import com.tzj.view.recyclerview.adapter.AdapterDelegate;
+import com.tzj.view.recyclerview.adapter.BaseDelegate;
 import com.tzj.view.recyclerview.adapter.TzjAdapter;
 
 import java.util.Collections;
@@ -62,8 +62,8 @@ public class DrawCallBack extends ItemTouchHelper.Callback {
     public void onMoved(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, int fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
         super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
         RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if (adapter instanceof AdapterDelegate){
-            adapter = ((AdapterDelegate)adapter).getAdapter();
+        if (adapter instanceof BaseDelegate){
+            adapter = ((BaseDelegate)adapter).getAdapter();
         }
         if (adapter instanceof TzjAdapter) {
             TzjAdapter wlAdapter = ((TzjAdapter) adapter);

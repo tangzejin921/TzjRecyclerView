@@ -35,6 +35,10 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
      * 记录上次点击的地方
      */
     private int selectId = -1;
+    /**
+     * 设置maxCount用于循环显示
+     */
+    private boolean mMaxCount = false;
 
     public TzjAdapter() {
     }
@@ -81,7 +85,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     }
 
     public <T> T getItem(int position) {
-        return (T) mData.get(position);
+        return (T) mData.get(position % mData.size());
     }
 
     public List<?> getList() {
@@ -109,8 +113,19 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         return selectId;
     }
 
+    public void setMaxCount(boolean maxCount) {
+        this.mMaxCount = maxCount;
+    }
+
+    public boolean isMaxCount() {
+        return mMaxCount;
+    }
+
     @Override
     public int getItemCount() {
+        if (mMaxCount){
+            return Integer.MAX_VALUE;
+        }
         return mData.size();
     }
 
@@ -170,10 +185,6 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
                         clickListener.onMyClick(v, index);
                     }
                 }
-
-                @Override
-                public void onMyClick(View view) {
-                }
             });
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -187,10 +198,6 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
                         itemClickListener.onMyClick(v, index);
                     }
                 }
-
-                @Override
-                public void onMyClick(View view) {
-                }
             });
             holder.itemView.setOnLongClickListener(new HolderOnClick(holder) {
                 @Override
@@ -199,10 +206,6 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
                     if (itemLongClickListener != null) {
                         itemLongClickListener.onMyClick(v, index);
                     }
-                }
-
-                @Override
-                public void onMyClick(View view) {
                 }
             });
         }
@@ -256,30 +259,41 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
     /**
      * item 点击事件
      */
-    public void setOnItemClickListener(NoDoubleOnClickListener itemClickListener) {
+    public void setOnItemClickListener(TzjAdapter.HolderOnClick itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
     /**
      * item 长按事件
      */
-    public void setOnItemLongClickListener(NoDoubleOnClickListener itemLongClickListener) {
+    public void setOnItemLongClickListener(TzjAdapter.HolderOnClick itemLongClickListener) {
         this.itemLongClickListener = itemLongClickListener;
     }
 
     /**
      * 点了具体的 view
      */
-    public void setOnClickListener(NoDoubleOnClickListener clickListener) {
+    public void setOnClickListener(TzjAdapter.HolderOnClick clickListener) {
         this.clickListener = clickListener;
     }
 
 
-    private abstract static class HolderOnClick extends NoDoubleOnClickListener {
+    public abstract static class HolderOnClick extends NoDoubleOnClickListener {
         protected TzjViewHolder holder;
+
+        public HolderOnClick() {
+        }
 
         public HolderOnClick(TzjViewHolder holder) {
             this.holder = holder;
+        }
+
+        @Override
+        public abstract void onMyClick(View view, int index);
+
+        @Override
+        public void onMyClick(View view) {
+            throw new RuntimeException("无效方法");
         }
     }
 

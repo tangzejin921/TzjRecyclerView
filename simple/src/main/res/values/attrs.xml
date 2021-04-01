@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="RecyclerView">
         <attr name="canChangeSpan" format="boolean"/>
-        <attr name="android:listDivider" format="color" />
+        <attr name="listDivider" format="reference|color" />
         <attr name="android:dividerHeight" format="dimension"/>
         <attr name="paddingLeftRight" format="boolean"/>
         <attr name="paddingTopBottom" format="boolean"/>

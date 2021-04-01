@@ -1,75 +1,22 @@
 package com.tzj.view.recyclerview.adapter;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.tzj.view.recyclerview.DefaultViewType;
 import com.tzj.view.recyclerview.IViewType;
 import com.tzj.view.recyclerview.holder.TzjViewHolder;
 import com.tzj.view.recyclerview.layoutmanager.ILayoutManager;
-import com.tzj.view.recyclerview.layoutmanager.LinearLayoutManager;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
- * 原本的Delegate,先保留，已后加功能可以参考
+ * 精简Delegate,去除空数据，网络变化等Adapter
  */
-public class AdapterDelegate extends RecyclerView.Adapter {
-    public interface ICreateViewType {
-        IViewType createEmpty();
+public class BaseDelegate extends RecyclerView.Adapter {
 
-        IViewType createNetErr();
-
-        IViewType createLoading();
-    }
-
-    public static ICreateViewType iCreateAdapter = new ICreateViewType() {
-        @Override
-        public IViewType createEmpty() {
-            return new DefaultViewType();
-        }
-
-        @Override
-        public IViewType createNetErr() {
-            return new DefaultViewType();
-        }
-
-        @Override
-        public IViewType createLoading() {
-            return new DefaultViewType();
-        }
-    };
-    private WeakReference<RecyclerView> mRecyclerView;
-    /**
-     * 空类容的 adapter
-     */
-    private TzjAdapter emptyAdapter = new TzjAdapter().addItem(iCreateAdapter.createEmpty());
-    public void setEmptyAdapter(TzjAdapter emptyAdapter) {
-        this.emptyAdapter = emptyAdapter;
-    }
-    /**
-     * 网络异常的 adapter
-     */
-    private TzjAdapter netErrAdapter = new TzjAdapter().addItem(iCreateAdapter.createNetErr());
-    public void setNetErrAdapter(TzjAdapter netErrAdapter) {
-        this.netErrAdapter = netErrAdapter;
-    }
-    /**
-     * 加载中的 adapter
-     */
-    private TzjAdapter loadingAdapter = new TzjAdapter().addItem(iCreateAdapter.createLoading());
-    public void setLoadingAdapter(TzjAdapter loadingAdapter) {
-        this.loadingAdapter = loadingAdapter;
-        currentAdapter = loadingAdapter;
-    }
+    protected WeakReference<RecyclerView> mRecyclerView;
     /**
      * 真实数据的 adapter
      */
@@ -77,7 +24,7 @@ public class AdapterDelegate extends RecyclerView.Adapter {
     /**
      * 当前的 Adapter
      */
-    private RecyclerView.Adapter currentAdapter = loadingAdapter;
+    protected RecyclerView.Adapter currentAdapter = adapter;
 
     /**
      * 记录调用了 notifyDatasetChanged
@@ -132,12 +79,7 @@ public class AdapterDelegate extends RecyclerView.Adapter {
         }
     };
 
-    /**
-     * 网络监听
-     */
-    private NetBroadcastReceiver receiver = new NetBroadcastReceiver(this);
-
-    public AdapterDelegate() {
+    public BaseDelegate() {
         /**
          * 这里设置 true，然后 设置 getItemId，
          * 调用 notifyDataChanged 界面上的view 不会刷新
@@ -202,9 +144,6 @@ public class AdapterDelegate extends RecyclerView.Adapter {
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        if (recyclerView.getContext() != null) {
-            receiver.registerReceiver(recyclerView.getContext());
-        }
         registerAdapterDataObserver(observer);
 //        adapter.registerAdapterDataObserver(adapterObserver);
         setmRecyclerView(recyclerView);
@@ -218,27 +157,18 @@ public class AdapterDelegate extends RecyclerView.Adapter {
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         setmRecyclerView(null);
-        if (recyclerView.getContext() != null) {
-            receiver.unRegisterReceiver(recyclerView.getContext());
-        }
         unregisterAdapterDataObserver(observer);
         adapter.unregisterAdapterDataObserver(adapterObserver);
     }
 
     // 这里因为不同的LayoutManager 会导致 EmptyAdapter、NetErrAdapter、LoadingAdapter 展示有问题
-    private void setmRecyclerView(RecyclerView recyclerView) {
+    protected void setmRecyclerView(RecyclerView recyclerView) {
         if (recyclerView == null) {
             this.mRecyclerView.clear();
-            emptyAdapter.setLayoutManager(null);
-            netErrAdapter.setLayoutManager(null);
-            loadingAdapter.setLayoutManager(null);
             adapter.setLayoutManager(null);
         } else {
             //有几个adapter设置为线性布局
-            RecyclerView.LayoutManager temp = new LinearLayoutManager(recyclerView.getContext());
-            emptyAdapter.setLayoutManager(temp);
-            netErrAdapter.setLayoutManager(temp);
-            loadingAdapter.setLayoutManager(temp);
+//            RecyclerView.LayoutManager temp = new LinearLayoutManager(recyclerView.getContext());
             if (recyclerView.getLayoutManager() != null) {//xml里设置了layoutManager
                 if (this.mRecyclerView == null) {
                     RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
@@ -247,10 +177,13 @@ public class AdapterDelegate extends RecyclerView.Adapter {
 //                        ((ILayoutManager) layoutManager).getDivider().divider(recyclerView);
 //                    }
                     setLayoutManager(layoutManager);
+                    if (layoutManager instanceof ILayoutManager){
+                        ((ILayoutManager) layoutManager).getDivider().divider(recyclerView);
+                    }
                 }
             } else {
             }
-            recyclerView.setLayoutManager(temp);
+//            recyclerView.setLayoutManager(temp);
             this.mRecyclerView = new WeakReference<>(recyclerView);
         }
     }
@@ -258,100 +191,10 @@ public class AdapterDelegate extends RecyclerView.Adapter {
     /**
      * 调用刷新时，切换 adapter
      */
-    private void changeAdapterAndNotify() {
-        synchronized (currentAdapter) {
-            loadingAdapter = null;
-            RecyclerView.Adapter lastAdapter = currentAdapter;//上一次的 Adapter
-            if (receiver.isConnect()) {
-                if (adapter.getList().size() == 0) {
-                    currentAdapter = emptyAdapter;
-                } else {
-                    currentAdapter = adapter;
-                }
-            } else {
-                currentAdapter = netErrAdapter;
-            }
-            if (lastAdapter != currentAdapter && lastAdapter instanceof TzjAdapter) {
-                RecyclerView.LayoutManager layoutManager = ((TzjAdapter) currentAdapter).getLayoutManager();
-                if (mRecyclerView != null) {
-                    RecyclerView recyclerView = mRecyclerView.get();
-                    if (recyclerView != null) {
-                        //设置divider
-                        if(layoutManager != null && layoutManager instanceof ILayoutManager){
-                            ((ILayoutManager) layoutManager).getDivider().divider(recyclerView);
-                        }
-                        if (layoutManager != null) {
-                            recyclerView.setLayoutManager(layoutManager);
-                        }
-                        if (currentAdapter == adapter) {
-                            currentAdapter.onAttachedToRecyclerView(recyclerView);//为了 GridLayout 的 span 设置
-                        }
-                    }
-                }
-            }
-        }
+    protected void changeAdapterAndNotify() {
+        notifyDatasetChanged();
     }
 
-
-    public static class NetBroadcastReceiver extends BroadcastReceiver {
-        private boolean isConnect;
-        private static final String checkNetBroadcast = "com.tzj.recyclerview.adapter.CHECK_NETWORK";
-
-        public static void sendBroadcast(Context ctx) {
-            Intent intent = new Intent(checkNetBroadcast);
-            ctx.sendBroadcast(intent);
-        }
-
-        private AdapterDelegate adapter;
-
-        public NetBroadcastReceiver(AdapterDelegate adapter) {
-            this.adapter = adapter;
-        }
-
-        public boolean isConnect() {
-            return isConnect;
-        }
-
-        public void setConnect(Context connect) {
-            isConnect = connect(connect);
-        }
-
-        public void registerReceiver(Context ctx) {
-            setConnect(ctx);
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-            filter.addAction(Intent.ACTION_SCREEN_ON);
-            filter.addAction(checkNetBroadcast);
-            ctx.registerReceiver(this, filter);
-        }
-
-        public void unRegisterReceiver(Context ctx) {
-            ctx.unregisterReceiver(this);
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)
-                    || intent.getAction().equals(Intent.ACTION_SCREEN_ON)
-                    || intent.getAction().equals(checkNetBroadcast)) {
-                boolean temp = connect(context);
-                if (temp != isConnect) {
-                    isConnect = temp;
-                    adapter.notifyDatasetChanged();
-                }
-            }
-        }
-
-        private boolean connect(Context ctx) {
-            ConnectivityManager manager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
-            if (activeNetwork != null && activeNetwork.isConnected()) { // 连接上网络
-                return true;
-            } else {   // 没有连接上
-                return false;
-            }
-        }
-    }
 
     public void notifyDatasetChanged() {
         notifyDatasetChanged = true;
@@ -390,7 +233,7 @@ public class AdapterDelegate extends RecyclerView.Adapter {
         adapter.addList(list);
     }
 
-    public AdapterDelegate addItem(Object item) {
+    public BaseDelegate addItem(Object item) {
         adapter.addItem(item);
         return this;
     }

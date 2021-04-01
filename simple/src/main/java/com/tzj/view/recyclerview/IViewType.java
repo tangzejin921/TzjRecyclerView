@@ -5,6 +5,7 @@ import com.tzj.view.recyclerview.holder.TzjViewHolder;
 public interface IViewType {
     /**
      * 这里直接给 布局
+     * 注意：一个布局对应的类不能重复。
      */
     int type();
 

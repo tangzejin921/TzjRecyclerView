@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group = "com.tzj.recyclerview"
+version = android.defaultConfig.versionName
 
 android {
     compileSdkVersion _compileSdkVersion
@@ -8,6 +11,11 @@ android {
         targetSdkVersion _targetSdkVersion
         versionCode 1
         versionName "1.0"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : "simple" ]
+            }
+        }
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

@@ -51,7 +51,7 @@ public class BaseDelegate extends RecyclerView.Adapter {
         @Override
         public void onChanged() {
             super.onChanged();
-            notifyDataSetChanged();
+            changeAdapterAndNotify();
         }
 
         @Override
@@ -144,8 +144,10 @@ public class BaseDelegate extends RecyclerView.Adapter {
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        registerAdapterDataObserver(observer);
-//        adapter.registerAdapterDataObserver(adapterObserver);
+//        registerAdapterDataObserver(observer);
+        try {
+            adapter.registerAdapterDataObserver(adapterObserver);
+        } catch (Exception e){}
         setmRecyclerView(recyclerView);
         if (notifyDatasetChanged) {
             notifyDatasetChanged();
@@ -157,7 +159,7 @@ public class BaseDelegate extends RecyclerView.Adapter {
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         setmRecyclerView(null);
-        unregisterAdapterDataObserver(observer);
+//        unregisterAdapterDataObserver(observer);
         adapter.unregisterAdapterDataObserver(adapterObserver);
     }
 
@@ -195,7 +197,7 @@ public class BaseDelegate extends RecyclerView.Adapter {
         notifyDatasetChanged();
     }
 
-
+    @Deprecated
     public void notifyDatasetChanged() {
         notifyDatasetChanged = true;
         super.notifyDataSetChanged();
@@ -221,7 +223,7 @@ public class BaseDelegate extends RecyclerView.Adapter {
         return (T) adapter.getItem(position);
     }
 
-    public List<?> getList() {
+    public List<Object> getList() {
         return adapter.getList();
     }
 

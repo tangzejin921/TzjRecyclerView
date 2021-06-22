@@ -25,7 +25,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
      */
     private RecyclerView.LayoutManager layoutManager;
 
-    protected List mData = new ArrayList();
+    protected List<Object> mData = new ArrayList();
     protected IViewType viewType;
     /**
      * view 的点击事件用 Tag 取index吗？
@@ -88,7 +88,7 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         return (T) mData.get(position % mData.size());
     }
 
-    public List<?> getList() {
+    public List<Object> getList() {
         return mData;
     }
 
@@ -227,16 +227,18 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
             gridManager.setSpanSizeLookup(new TzjSpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    IViewType item = getItem(position);
-                    if (item instanceof com.tzj.view.recyclerview.layoutmanager.GridLayoutManager.SpanSize) {
-                        int temp = ((com.tzj.view.recyclerview.layoutmanager.GridLayoutManager.SpanSize) item).getSpanSize();
-                        if (temp < 1){
-                            temp = gridManager.getSpanCount();
+                    Object obj= getItem(position);
+                    if (obj instanceof IViewType){
+                        IViewType item = (IViewType) obj;
+                        if (item instanceof com.tzj.view.recyclerview.layoutmanager.GridLayoutManager.SpanSize) {
+                            int temp = ((com.tzj.view.recyclerview.layoutmanager.GridLayoutManager.SpanSize) item).getSpanSize();
+                            if (temp < 1){
+                                temp = gridManager.getSpanCount();
+                            }
+                            return temp;
                         }
-                        return temp;
-                    } else {
-                        return 1;
                     }
+                    return 1;
                 }
             });
         }

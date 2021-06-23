@@ -1,8 +1,8 @@
 package com.tzj.view.recyclerview.holder;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import android.view.View;
 
 import com.tzj.view.recyclerview.R;

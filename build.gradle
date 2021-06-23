@@ -26,10 +26,11 @@ allprojects {
     }
 }
 project.ext {
-    ext._compileSdkVersion = 27
-    ext._minSdkVersion = 16
-    ext._targetSdkVersion = 27
+    ext._compileSdkVersion = 30
+    ext._minSdkVersion = 24
+    ext._targetSdkVersion = 30
     ext._supportVersion = "27.1.1"
+    ext._xVersion = "1.2.0"
     ext.javaVersion = JavaVersion.VERSION_1_8
 }
 task clean(type: Delete) {

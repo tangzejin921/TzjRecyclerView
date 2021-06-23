@@ -2,7 +2,7 @@ package com.tzj.view.recyclerview.layoutmanager;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import com.tzj.view.recyclerview.DividerItemDecoration;
@@ -11,7 +11,7 @@ import com.tzj.view.recyclerview.R;
 /**
  *
  */
-public class LinearLayoutManager extends android.support.v7.widget.LinearLayoutManager implements ILayoutManager {
+public class LinearLayoutManager extends androidx.recyclerview.widget.LinearLayoutManager implements ILayoutManager {
     private DividerItemDecoration divider = new DividerItemDecoration();
     public LinearLayoutManager(Context context) {
         super(context);

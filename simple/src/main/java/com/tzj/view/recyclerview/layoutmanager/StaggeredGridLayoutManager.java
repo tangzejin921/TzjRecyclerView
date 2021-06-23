@@ -11,7 +11,7 @@ import com.tzj.view.recyclerview.R;
  *
  */
 
-public class StaggeredGridLayoutManager extends android.support.v7.widget.StaggeredGridLayoutManager implements ILayoutManager {
+public class StaggeredGridLayoutManager extends androidx.recyclerview.widget.StaggeredGridLayoutManager implements ILayoutManager {
     private DividerItemDecoration divider = new DividerItemDecoration();
     public StaggeredGridLayoutManager(int spanCount, int orientation) {
         super(spanCount, orientation);

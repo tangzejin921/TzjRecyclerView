@@ -2,8 +2,8 @@ package com.tzj.view.recyclerview.layoutmanager;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.TzjSpanSizeLookup;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.TzjSpanSizeLookup;
 import android.util.AttributeSet;
 
 import com.tzj.view.recyclerview.DividerItemDecoration;
@@ -12,7 +12,7 @@ import com.tzj.view.recyclerview.R;
 /**
  *
  */
-public class GridLayoutManager extends android.support.v7.widget.GridLayoutManager implements ILayoutManager {
+public class GridLayoutManager extends androidx.recyclerview.widget.GridLayoutManager implements ILayoutManager {
     private boolean canChangeSpan;
     private DividerItemDecoration divider = new DividerItemDecoration();
     /**

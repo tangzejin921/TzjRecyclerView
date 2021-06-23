@@ -1,4 +1,4 @@
-package android.support.v7.widget;
+package androidx.recyclerview.widget;
 
 import android.graphics.Point;
 
@@ -44,7 +44,7 @@ public class TzjSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
         } else {
             // If caching is enabled, try to jump
             if (isSpanIndexCacheEnabled() && mSpanIndexCache.size() > 0) {
-                int prevKey = findReferenceIndexFromCache(position);
+                int prevKey = findFirstKeyLessThan(mSpanIndexCache,position);
                 if (prevKey >= 0) {
                     index = mSpanIndexCache.get(prevKey) + getSpanSize(prevKey);
                     startPos = prevKey + 1;

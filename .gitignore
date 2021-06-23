@@ -7,7 +7,6 @@
 .externalNativeBuild
 app/libs/
 app/proguard-rules.pro
-gradle.properties
 .gradle
 gradlew
 gradlew.bat

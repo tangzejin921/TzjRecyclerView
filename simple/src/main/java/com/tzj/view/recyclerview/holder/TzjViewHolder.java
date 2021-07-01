@@ -1,8 +1,10 @@
 package com.tzj.view.recyclerview.holder;
 
 import android.content.Context;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+
 import android.view.View;
 
 import com.tzj.view.recyclerview.R;
@@ -30,10 +32,9 @@ public class TzjViewHolder<D> extends BaseViewHolder {
      * 构造方法里取不到 WLAdapter
      */
     public void onCreateView(Context ctx, TzjAdapter adapter, View itemView) {
-        try {
-            binding = DataBindingUtil.bind(itemView);
-        }catch (Throwable e){}
+
     }
+
     /**
      *
      */
@@ -51,6 +52,7 @@ public class TzjViewHolder<D> extends BaseViewHolder {
     public void setListener(View.OnClickListener listener) {
         this.listener = listener;
     }
+
     /**
      * 绑定 OnclickListener
      */
@@ -66,18 +68,31 @@ public class TzjViewHolder<D> extends BaseViewHolder {
     public boolean onClickable() {
         return true;
     }
+
     /**
      * 专为 dataBinding 调用的
      */
     public void onClick(View view) {
         int adapterPosition = getAdapterPosition();
-        if (adapterPosition >= 0 ){
+        if (adapterPosition >= 0) {
             view.setTag(R.id.item_index_tag, adapterPosition);
             view.setOnClickListener(listener);
             //不然没有点击声音
             view.performClick();
         }
     }
+
+    /**
+     * 使用 DataBindingUtil.bind(itemView)
+     */
+    protected ViewDataBinding doBind(View itemView) {
+        try {
+            return DataBindingUtil.bind(itemView);
+        } catch (Throwable e) {
+        }
+        return null;
+    }
+
     /**
      * 请用 Holder的名称 的文件名
      * 返回 datadinding 的 BR.id
@@ -93,7 +108,7 @@ public class TzjViewHolder<D> extends BaseViewHolder {
         }
     }
 
-    protected <T extends View> T findViewById(int id){
+    protected <T extends View> T findViewById(int id) {
         return itemView.findViewById(id);
     }
 

@@ -10,6 +10,7 @@ import android.view.View;
 import com.tzj.view.recyclerview.R;
 import com.tzj.view.recyclerview.adapter.TzjAdapter;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
 
@@ -21,6 +22,10 @@ public class TzjViewHolder<D> extends BaseViewHolder {
     protected ViewDataBinding binding;
 
     protected View.OnClickListener listener;
+    /**
+     * view所对应的数据
+     */
+    protected WeakReference<D> mTarget;
 
     public TzjViewHolder(View itemView) {
         super(itemView);
@@ -32,7 +37,29 @@ public class TzjViewHolder<D> extends BaseViewHolder {
      * 构造方法里取不到 WLAdapter
      */
     public void onCreateView(Context ctx, TzjAdapter adapter, View itemView) {
+//        binding = doBind(itemView);
+    }
 
+    /**
+     * 是否需要调用刷新,
+     * 如果需要判断数据是否改变
+     * 请重写此方法和数据类的hashChange，调用isEques进行判断
+     */
+    public boolean isDoBind(final D newObj) {
+        return true;
+    }
+
+    /**
+     * 新数据与旧数据是否相等
+     * 注意请不要调用多次，只能调用一次
+     */
+    protected final boolean isEques(final D newObj) {
+        D oldObj = null;
+        if (mTarget != null) {
+            oldObj = mTarget.get();
+        }
+        mTarget = new WeakReference<>(newObj);
+        return DiffCallBack.areContentsTheSame(oldObj,newObj,true);
     }
 
     /**
@@ -44,6 +71,11 @@ public class TzjViewHolder<D> extends BaseViewHolder {
             binding.setVariable(onBrId(item.getClass().getSimpleName()), item);
             binding.executePendingBindings();
         }
+        onBind(item, position);
+    }
+
+    public void onBind(D item, int position) {
+
     }
 
     /**
@@ -89,6 +121,7 @@ public class TzjViewHolder<D> extends BaseViewHolder {
         try {
             return DataBindingUtil.bind(itemView);
         } catch (Throwable e) {
+            e.printStackTrace();
         }
         return null;
     }

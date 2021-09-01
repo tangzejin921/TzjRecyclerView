@@ -38,6 +38,7 @@ public abstract class NoDoubleOnClickListener implements View.OnClickListener{
             lastClickTime = l - delay;
         }
         if (l - lastClickTime <= delay){
+            lastClickTime = l;
             Log.w("onClick","点击太快："+lastClickTime);
             return true;
         }

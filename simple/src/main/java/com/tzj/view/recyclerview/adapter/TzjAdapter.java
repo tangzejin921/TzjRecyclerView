@@ -15,17 +15,15 @@ import com.tzj.view.recyclerview.R;
 import com.tzj.view.recyclerview.holder.TzjViewHolder;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
+public class TzjAdapter extends TzjLVAdapter {
     /**
      * 记录暂存用
      */
     private RecyclerView.LayoutManager layoutManager;
 
-    protected List<Object> mData = new ArrayList();
     protected IViewType viewType;
     /**
      * view 的点击事件用 Tag 取index吗？
@@ -82,10 +80,6 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
         if (this.layoutManager == null || layoutManager == null){
             this.layoutManager = layoutManager;
         }
-    }
-
-    public <T> T getItem(int position) {
-        return (T) mData.get(position % mData.size());
     }
 
     public List<Object> getList() {
@@ -214,8 +208,11 @@ public class TzjAdapter extends RecyclerView.Adapter<TzjViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TzjViewHolder holder, int position) {
-        holder.itemView.setTag(R.id.item_index_tag, position);
-        holder.onBind(this, getItem(position), position);
+        Object newObj = getItem(position);
+        if (holder.isDoBind(newObj)) {
+            holder.itemView.setTag(R.id.item_index_tag, position);
+            holder.onBind(this, newObj, position);
+        }
     }
 
     @Override

@@ -210,6 +210,9 @@ public class TzjAdapter extends TzjLVAdapter {
     public void onBindViewHolder(@NonNull TzjViewHolder holder, int position) {
         Object newObj = getItem(position);
         if (holder.isDoBind(newObj)) {
+            if (newObj instanceof IViewType){
+                ((IViewType) newObj).onRefresh();
+            }
             holder.itemView.setTag(R.id.item_index_tag, position);
             holder.onBind(this, newObj, position);
         }

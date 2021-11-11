@@ -18,13 +18,19 @@ public interface IViewType {
 
     /**
      * 　用于判断同一个对象是否改变，
-     * 　注意其调用次数。
-     * 　此方法有可能被DiffCallBack和TzjViewHolder子类调用２次
+     * 　注意其调用次数。当onBind之后将会重新记录hashCode
+     * 　此方法有可能被DiffCallBack和TzjViewHolder子类调用
      *  此方法与TzjViewHolder.isDoBind 应当同时重写
-     * @param save 为了实现多次调用此判断，才加了此入参，
-     *             一旦传入true，将保存当前hash。后续再调用判断将不准
+     * @param save 过时了，不需要此参数了
      */
     default boolean hashChange(boolean save) {
         return true;
     }
+
+    /**
+     * adapter 调用刷新(onBind)之前会调用此方法
+     * 可以在此方法里记录 hashCode，
+     * 然后hashChange里用记录的hashCode与自身hashCode对比
+     */
+    default void onRefresh(){}
 }
